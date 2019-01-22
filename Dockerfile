@@ -1,7 +1,7 @@
 FROM kiwixz/arch-vcpkg:2019-01-20
 
 WORKDIR "/mnt/repo"
-COPY "*.py" "/mnt/repo/"
+COPY "install_libs.py" "/mnt/repo/"
 
 RUN pacman --color=always --needed --noconfirm -Sy  \
         python3  \
