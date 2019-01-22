@@ -22,6 +22,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED "ON")
 
 include_directories("${CMAKE_SOURCE_DIR}")
 
+find_package("fmt" CONFIG REQUIRED)
+find_package("spdlog" CONFIG REQUIRED)
+
 
 file(GLOB_RECURSE src "fractal/*.cpp")
 add_executable("fractal" "${src}")
+target_link_libraries("fractal"
+    "fmt::fmt"
+    "spdlog::spdlog"
+)
