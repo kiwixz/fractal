@@ -5,7 +5,7 @@
 
 ## Overview
 
-Tool to visualize [Julia set](https://en.wikipedia.org/wiki/Julia_set).
+Tool to visualize [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set).
 
 
 ## License
