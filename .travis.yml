@@ -21,7 +21,7 @@ before_script:
 
 before_cache:
     - mkdir -p "$CACHE_DIR"
-    - docker save -o "$CACHE_DIR/docker.tar" $(docker history -q "$DOCKER_IMAGE" | grep -v "<" | head -n -2)
+    - docker save -o "$CACHE_DIR/docker.tar" $(docker history -q "$DOCKER_IMAGE" | grep -v "<" | tail -n +3)
 
 
 script:
