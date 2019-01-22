@@ -10,10 +10,6 @@ Tool to visualize [Julia set](https://en.wikipedia.org/wiki/Julia_set).
 
 ## License
 
-Copyright (c) 2018 kiwixz. All rights reserved.
-
-Licensed under the MIT License.
-
 ```
 MIT License
 
