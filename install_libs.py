@@ -33,12 +33,14 @@ def install_vcpkg():
     bootstrap_file = Path("vcpkg") / ("bootstrap-vcpkg.bat" if is_win() else "bootstrap-vcpkg.sh")
     subprocess.check_call(rf'{bootstrap_file} -disableMetrics')
 
+
 def install_vcpkg_packages():
     logging.info("installing vcpkg libs")
     triplet = "x64-windows" if is_win() else "x64-linux"
     vcpkg_exe = Path("vcpkg") / "vcpkg"
     subprocess.check_call(rf'{vcpkg_exe} install --triplet {triplet} {VCPKG_LIBS}')
     subprocess.check_call(rf'{vcpkg_exe} upgrade --no-dry-run')
+
 
 def cleanup_vcpkg():
     logging.info("cleaning up vcpkg")
