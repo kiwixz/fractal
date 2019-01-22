@@ -1,0 +1,45 @@
+services:
+    - docker
+
+env:
+    - CACHE_DIR="build/cache"
+    - DOCKER_IMAGE="docker_image"
+
+cache:
+    directories:
+        - "$CACHE_DIR"
+
+before_script:
+    - |
+        if [[ -f "$CACHE_DIR/docker.tar" ]]; then
+            docker load -i "$CACHE_DIR/docker.tar"
+        fi
+    - docker build -t "$DOCKER_IMAGE" --pull .
+
+before_cache:
+    - mkdir -p "$CACHE_DIR"
+    - docker save -o "$CACHE_DIR/docker.tar" $(docker history -q "$DOCKER_IMAGE" | grep -v "<")
+
+
+script:
+    - |
+        docker run --rm "$DOCKER_IMAGE" /bin/bash -c '
+            set -e
+
+            pacman --color=always -Q
+            vcpkg list
+
+            export CXXFLAGS="-Werror "
+            CXXFLAGS+="-isystem /opt/vcpkg/installed/x64-linux/include -L/opt/vcpkg/installed/x64-linux/lib "
+            CXXFLAGS+="-fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak -fsanitize=undefined "
+
+            mkdir -p "build/debug"
+            cd "build/debug"
+            cmake "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_BUILD_TYPE=Debug" "../.."
+            make -j$(nproc) -O
+
+            mkdir "../release"
+            cd "../release"
+            cmake "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_BUILD_TYPE=RelWithDebInfo" "../.."
+            make -j$(nproc) -O
+        '
