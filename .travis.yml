@@ -1,9 +1,12 @@
+language: minimal
+
 services:
     - docker
 
 env:
-    - CACHE_DIR="build/cache"
-    - DOCKER_IMAGE="docker_image"
+    global:
+        - CACHE_DIR="build/cache"
+        - DOCKER_IMAGE="docker_image"
 
 cache:
     directories:
@@ -35,11 +38,11 @@ script:
 
             mkdir -p "build/debug"
             cd "build/debug"
-            cmake "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_BUILD_TYPE=Debug" "../.."
-            make -j$(nproc) -O
+            cmake -G Ninja "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_BUILD_TYPE=Debug" "../.."
+            ninja
 
             mkdir "../release"
             cd "../release"
-            cmake "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_BUILD_TYPE=RelWithDebInfo" "../.."
-            make -j$(nproc) -O
+            cmake -G Ninja "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_BUILD_TYPE=RelWithDebInfo" "../.."
+            ninja
         '
