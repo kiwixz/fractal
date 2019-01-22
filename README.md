@@ -1,5 +1,7 @@
 # fractal
 
+[![](https://api.travis-ci.com/kiwixz/fractal.svg?branch=master)](https://travis-ci.com/kiwixz/fractal)
+
 
 ## Overview
 
