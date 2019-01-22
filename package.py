@@ -49,7 +49,7 @@ def find_required_dlls():
     while len(sources):
         source = str(sources.pop())
         raw = subprocess.check_output([dumpbin_exe, "/DEPENDENTS", source])
-        matches = re.findall(r'(^|\s)([\w.-]+\.dll)($|\s)', raw.decode("utf8"))
+        matches = re.findall(r'(^|\s)([\w.-]+\.dll)($|\s)', raw.decode())
         new_dlls = [match[1] for match in matches]
         sources.extend([dll for dll in set([Path("build") / "x64-Release" / dll
                                             for dll in new_dlls]).difference(dlls_list)
@@ -59,7 +59,7 @@ def find_required_dlls():
 
 
 def copy_app(package_dir, required_dlls):
-    logging.info(f"copying {APP_NAME}")
+    logging.info(f"copying app")
     bin_source = Path("build") / "x64-Release"
     for exe in [bin_source / file for file in EXE_FILES]:
         shutil.copy2(exe, package_dir)
@@ -84,8 +84,11 @@ def copy_redist(vs_path, package_dir, required_dlls):
 
 
 def zip_app(package_dir):
-    for file in package_dir.glob("**/*"):
-        print(file)
+    logging.info(f"zipping")
+    with zipfile.ZipFile(f"build/{APP_NAME}.zip", "w", zipfile.ZIP_LZMA) as zipf:
+        for file in package_dir.glob("**/*"):
+            if file.is_file():
+                zipf.write(file, f"{APP_NAME}/{file.relative_to(package_dir)}")
 
 
 if __name__ == "__main__":
