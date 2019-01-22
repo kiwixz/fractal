@@ -8,7 +8,7 @@ RUN pacman --color=always --needed --noconfirm -Sy  \
         clang diffutils  \
     \
     && mv "/opt/vcpkg" "./"  \
-    && ln -s "/mnt/repo/vcpkg" "/opt/vcpkg"  \
+    && ln -s "/mnt/repo/vcpkg" "/opt/vcpkg"
 
 COPY "install_libs.py" "/mnt/repo/"
 RUN bash -l -c 'python3 "install_libs.py"'  \
