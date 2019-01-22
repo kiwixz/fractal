@@ -72,7 +72,7 @@ script:
             export CXXFLAGS="-isystem /opt/vcpkg/installed/x64-linux/include -Wno-unknown-warning-option"
             mkdir "build"
             cd "build"
-            cmake "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_BUILD_TYPE=RelWithDebInfo" ".."
+            cmake -G Ninja "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_BUILD_TYPE=RelWithDebInfo" ".."
             cd ..
             SRC="$(git ls-files | grep -E '\.cpp$')"
             clang-tidy -quiet -p "build/compile_commands.json" -warnings-as-errors "*" $SRC
