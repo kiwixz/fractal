@@ -1,6 +1,6 @@
-#include <cstdio>
+#include <fmt/printf.h>
 
 int main()
 {
-    puts("Hello World!\n");
+    fmt::print("Hello {}!\n", "World");
 }
