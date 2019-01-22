@@ -1,0 +1,8 @@
+/build/
+/vcpkg/
+
+# Visual Studio
+.vs/
+.vscode/
+*.aps
+*.user
