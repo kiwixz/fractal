@@ -13,6 +13,7 @@ VCPKG_LIBS = [
     "fmt",
     "glfw3",
     "spdlog",
+    "tinyfiledialogs",
 ]
 
 
