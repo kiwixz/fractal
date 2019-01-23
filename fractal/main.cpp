@@ -1,19 +1,12 @@
 #include <spdlog/spdlog.h>  // waiting for https://github.com/Microsoft/vcpkg/pull/5175
 
-#include <glad/glad.h>
+#include <glad/glfw.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <tinyfiledialogs.h>
 #include <filesystem>
 #include <memory>
 #include <stdexcept>
-
-#include <GLFW/glfw3.h>  // needs to be after glad
-
-
-#ifdef _WIN32
-#    pragma comment(lib, "opengl32")
-#endif
 
 
 namespace fractal {
@@ -50,6 +43,8 @@ void loop()
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glBindTexture(0, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
