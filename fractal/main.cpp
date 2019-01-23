@@ -1,12 +1,14 @@
 #include <spdlog/spdlog.h>  // waiting for https://github.com/Microsoft/vcpkg/pull/5175
 
-#include <GLFW/glfw3.h>
+#include <glad/glad.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <tinyfiledialogs.h>
 #include <filesystem>
 #include <memory>
 #include <stdexcept>
+
+#include <GLFW/glfw3.h>  // needs to be after glad
 
 
 #ifdef _WIN32
@@ -42,6 +44,10 @@ void loop()
     std::unique_ptr<GLFWwindow, void (*)(GLFWwindow*)> window_raii{window, glfwDestroyWindow};
 
     glfwMakeContextCurrent(window);
+    if (!gladLoadGL())
+        throw std::runtime_error{"could not load opengl"};
+    glfwSwapInterval(1);
+
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
 
