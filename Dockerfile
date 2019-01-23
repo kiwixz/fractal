@@ -4,7 +4,7 @@ WORKDIR "/mnt/repo"
 
 RUN pacman --color=always --needed --noconfirm -Sy  \
         python3  \
-        cmake gcc lld ninja  \
+        cmake gcc ninja  \
         clang diffutils  \
         libxcursor libxinerama libxrandr  \
     \
