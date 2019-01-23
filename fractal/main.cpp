@@ -14,6 +14,11 @@ namespace fractal {
 namespace {
 
 struct Glfw {
+    Glfw(const Glfw&) = delete;
+    Glfw& operator=(const Glfw&) = delete;
+    Glfw(Glfw&&) = delete;
+    Glfw& operator=(Glfw&&) = delete;
+
     Glfw()
     {
         if (!glfwInit())
