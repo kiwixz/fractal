@@ -11,6 +11,7 @@ from pathlib import Path
 VCPKG_COMMIT = "c6db2c880a064b29e0b38eda29f19510235fb4c9"
 VCPKG_LIBS = [
     "fmt",
+    "glfw3",
     "spdlog",
 ]
 
@@ -46,8 +47,10 @@ def cleanup_vcpkg():
     logging.info("cleaning up vcpkg")
     vcpkg_path = Path("vcpkg")
     shutil.rmtree(vcpkg_path / "buildtrees", True)
-    shutil.rmtree(vcpkg_path / "downloads", True)
     shutil.rmtree(vcpkg_path / "packages", True)
+    for file in (vcpkg_path / "downloads").glob("*"):
+        if file.is_file():
+            file.unlink()
 
 
 if __name__ == "__main__":
