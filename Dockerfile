@@ -6,7 +6,7 @@ RUN pacman --color=always --needed --noconfirm -Sy  \
         python3  \
         cmake gcc ninja  \
         clang diffutils  \
-        libxcursor libxinerama  \
+        libxcursor libxinerama libxrandr  \
     \
     && mv "/opt/vcpkg" "./"  \
     && ln -s "/mnt/repo/vcpkg" "/opt/vcpkg"
