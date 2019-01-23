@@ -3,7 +3,7 @@ project(fractal)
 
 
 function ("local_lib" name)
-    file(GLOB_RECURSE src "${name}/*.cpp")
+    file(GLOB_RECURSE src "${name}/*.cpp" "${name}/*.c")
     add_library("${name}" "${src}")
 endfunction ()
 
@@ -13,7 +13,7 @@ function ("local_exe" name)
         message(FATAL_ERROR "my_exe: unrecognized options: ${args_UNPARSED_ARGUMENTS}")
     endif ()
 
-    file(GLOB_RECURSE src "${name}/*.cpp")
+    file(GLOB_RECURSE src "${name}/*.cpp" "${name}/*.c")
     add_executable("${name}" "${src}")
 
     if (NOT "${args_DEPENDS}" STREQUAL "")
@@ -53,7 +53,7 @@ find_package("spdlog" CONFIG REQUIRED)
 
 local_lib("glad")
 
-local_exe("tetris"
+local_exe("fractal"
     DEPENDS
         "glad"
     LIBRARIES
