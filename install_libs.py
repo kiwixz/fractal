@@ -32,7 +32,7 @@ def install_vcpkg():
     else:
         subprocess.check_call(["git", "clone", "https://github.com/Microsoft/vcpkg.git"])
     subprocess.check_call(["git", "-C", "vcpkg", "checkout", VCPKG_COMMIT])
-    bootstrap_file = Path("vcpkg") / ("bootstrap-vcpkg.bat" if is_win() else "bootstrap-vcpkg.sh")
+    bootstrap_file = str(Path("vcpkg") / ("bootstrap-vcpkg.bat" if is_win() else "bootstrap-vcpkg.sh"))
     subprocess.check_call([bootstrap_file, "-disableMetrics"])
 
 
