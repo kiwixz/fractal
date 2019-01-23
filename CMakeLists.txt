@@ -60,4 +60,7 @@ local_exe("fractal"
         "fmt::fmt"
         "glfw"
         "spdlog::spdlog"
+        "tinyfiledialogs"
+
+        "stdc++fs"
 )
