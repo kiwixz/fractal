@@ -1,0 +1,46 @@
+﻿{
+  "configurations": [
+    {
+      "name": "x64-Debug",
+      "configurationType": "Debug",
+      "generator": "Ninja",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
+      "variables": [
+        {
+          "name": "CMAKE_CXX_FLAGS",
+          "value": "/I ${projectDir}\\vcpkg\\installed\\x64-windows\\include"
+        },
+        {
+          "name": "CMAKE_EXE_LINKER_FLAGS",
+          "value": "/LIBPATH:${projectDir}\\vcpkg\\installed\\x64-windows\\debug\\lib"
+        },
+        {
+          "name": "CMAKE_TOOLCHAIN_FILE",
+          "value": "${projectDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        }
+      ]
+    },
+    {
+      "name": "x64-Release",
+      "configurationType": "RelWithDebInfo",
+      "generator": "Ninja",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
+      "variables": [
+        {
+          "name": "CMAKE_CXX_FLAGS",
+          "value": "/I ${projectDir}\\vcpkg\\installed\\x64-windows\\include"
+        },
+        {
+          "name": "CMAKE_EXE_LINKER_FLAGS",
+          "value": "/LIBPATH:${projectDir}\\vcpkg\\installed\\x64-windows\\lib"
+        },
+        {
+          "name": "CMAKE_TOOLCHAIN_FILE",
+          "value": "${projectDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        }
+      ]
+    }
+  ]
+}
