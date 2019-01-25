@@ -4,7 +4,7 @@ namespace fractal {
 
 Quad::Quad()
 {
-    constexpr std::array<GLfloat, 5 * 2> texture_coords{{0.f, 0.f,
+    constexpr std::array<GLfloat, 4 * 2> texture_coords{{0.f, 0.f,
                                                          1.f, 0.f,
                                                          0.f, 1.f,
                                                          1.f, 1.f}};
@@ -24,6 +24,13 @@ Quad::Quad()
     glBufferData(GL_ARRAY_BUFFER, sizeof(texture_coords), texture_coords.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Quad::draw() const
+{
+    glBindVertexArray(vertex_array_);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glBindVertexArray(0);
 }
 
 }  // namespace fractal

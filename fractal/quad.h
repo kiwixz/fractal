@@ -9,9 +9,11 @@ class Quad {
 public:
     Quad();
 
+    void draw() const;
+
 private:
-    GlVertexArrays<> vertex_array_;
     GlBuffers<2> vertex_buffers_;
+    GlVertexArrays<> vertex_array_;
 };
 
 }  // namespace fractal
