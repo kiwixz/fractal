@@ -1,12 +1,9 @@
-#include <spdlog/spdlog.h>  // workaround to be removed after merge of https://github.com/Microsoft/vcpkg/pull/5175
-
 #include "main_window.h"
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <tinyfiledialogs.h>
 #include <filesystem>
 #include <stdexcept>
-
 
 namespace fractal {
 namespace {
