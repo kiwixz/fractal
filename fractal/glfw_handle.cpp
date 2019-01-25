@@ -2,8 +2,7 @@
 #include <glad/glfw.h>
 #include <stdexcept>
 
-namespace fractal
-{
+namespace fractal {
 
 GlfwHandle::GlfwHandle() :
     instance_{get_instance()}

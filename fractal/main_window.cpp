@@ -1,8 +1,7 @@
 #include "main_window.h"
 #include <stdexcept>
 
-namespace fractal
-{
+namespace fractal {
 
 MainWindow::MainWindow() :
     window_{nullptr, glfwDestroyWindow}

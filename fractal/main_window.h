@@ -3,8 +3,7 @@
 #include "glfw_handle.h"
 #include <glad/glfw.h>
 
-namespace fractal
-{
+namespace fractal {
 
 struct MainWindow {
     MainWindow();

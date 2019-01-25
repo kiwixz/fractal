@@ -2,8 +2,7 @@
 
 #include <memory>
 
-namespace fractal
-{
+namespace fractal {
 
 struct GlfwHandle {
     GlfwHandle();

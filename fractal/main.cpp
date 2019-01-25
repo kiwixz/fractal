@@ -8,10 +8,8 @@
 #include <stdexcept>
 
 
-namespace fractal
-{
-namespace
-{
+namespace fractal {
+namespace {
 
 void main_core()
 {
