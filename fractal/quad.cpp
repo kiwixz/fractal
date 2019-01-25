@@ -21,7 +21,7 @@ Quad::Quad()
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffers_[1]);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-    glBufferData(GL_ARRAY_BUFFER, texture_coords.size() * sizeof(GLfloat), texture_coords.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texture_coords), texture_coords.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

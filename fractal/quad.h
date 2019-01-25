@@ -3,8 +3,7 @@
 #include "gl_object.h"
 #include <array>
 
-namespace fractal
-{
+namespace fractal {
 
 class Quad {
 public:
