@@ -2,43 +2,51 @@
 
 #include <glad/glad.h>
 #include <array>
-#include <functional>
-#include <memory>
 
 namespace fractal {
 
 using GlDeleter = void (*)(GLuint id);
 using GlArrayDeleter = void (*)(GLsizei size, GLuint const* ids);
 
+
 // we need to take pointers to make deleters compile time constants
 // because they are loaded at runtime
 template <GlDeleter* Tdeleter>
 struct GlObject {
-    static constexpr GlDeleter deleter = Tdeleter;
-
-    GlObject();
+    GlObject() = default;
+    ~GlObject();
+    GlObject(GlObject const&) = delete;
+    GlObject& operator=(GlObject const&) = delete;
+    GlObject(GlObject&& other) noexcept;
+    GlObject& operator=(GlObject&& other) noexcept;
 
     operator GLuint() const;
     GLuint id() const;
 
+    GLuint* ptr();
+
 private:
-    std::unique_ptr<void, std::function<void(void*)>> handle_;
-    GLuint id_;
+    GLuint id_ = 0;
 };
 
 
 template <GlArrayDeleter* Tdeleter, size_t Tsize = 1>
 struct GlArrayObject {
-    static constexpr GlDeleter deleter = Tdeleter;
-    static constexpr size_t size = Tsize;
+    GlArrayObject() = default;
+    ~GlArrayObject();
+    GlArrayObject(GlArrayObject const&) = delete;
+    GlArrayObject& operator=(GlArrayObject const&) = delete;
+    GlArrayObject(GlArrayObject&& other) noexcept;
+    GlArrayObject& operator=(GlArrayObject&& other) noexcept;
 
-    GlArrayObject();
-
+    operator GLuint() const;
     GLuint operator[](size_t index) const;
+    constexpr GLsizei size() const;
+
+    GLuint* ptr();
 
 private:
-    std::unique_ptr<void, std::function<void(void*)>> handle_;
-    std::array<GLuint, size> ids_;
+    std::array<GLuint, Tsize> ids_ = {};
 };
 
 }  // namespace fractal
