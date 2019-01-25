@@ -3,6 +3,10 @@
 namespace fractal
 {
 
+GlObject::GlObject() :
+    handle_{nullptr, nullptr}
+{}
+
 GlObject::operator GLuint() const
 {
     return id_;

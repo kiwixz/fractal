@@ -7,7 +7,7 @@ namespace fractal
 {
 
 struct GlObject {
-    GlObject() = default;
+    GlObject();
 
     template <typename T>
     GlObject(GLuint id, T&& deleter);
