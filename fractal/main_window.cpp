@@ -17,7 +17,9 @@ MainWindow::MainWindow() :
     window_.reset(window);
 
     glfwMakeContextCurrent(window);
-    if (!gladLoadGL())
+    if (!gladLoadGLLoader([](const char* name) {
+            return static_cast<void*>(glfwGetProcAddress(name));
+        }))
         throw std::runtime_error{"could not load opengl"};
 
     glfwSwapInterval(1);
