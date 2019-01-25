@@ -10,8 +10,8 @@ struct ScopeExit {
     ~ScopeExit();
     ScopeExit(ScopeExit const&) = delete;
     ScopeExit& operator=(ScopeExit const&) = delete;
-    ScopeExit(ScopeExit&& other);
-    ScopeExit& operator=(ScopeExit&& other);
+    ScopeExit(ScopeExit&& other) noexcept;
+    ScopeExit& operator=(ScopeExit&& other) noexcept;
 
 private:
     std::function<void()> function_;

@@ -8,6 +8,9 @@ namespace fractal {
 MainWindow::MainWindow() :
     window_{nullptr, glfwDestroyWindow}
 {
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+
     GLFWwindow* window = glfwCreateWindow(1600, 900, "fractal", nullptr, nullptr);
     if (!window)
         throw std::runtime_error{"could not create window"};

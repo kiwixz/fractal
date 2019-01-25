@@ -12,12 +12,12 @@ ScopeExit::~ScopeExit()
         function_();
 }
 
-ScopeExit::ScopeExit(ScopeExit&& other)
+ScopeExit::ScopeExit(ScopeExit&& other) noexcept
 {
     *this = std::move(other);
 }
 
-ScopeExit& ScopeExit::operator=(ScopeExit&& other)
+ScopeExit& ScopeExit::operator=(ScopeExit&& other) noexcept
 {
     std::swap(function_, other.function_);
     return *this;

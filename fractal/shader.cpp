@@ -8,7 +8,7 @@ Shader::Shader(GLenum type, std::string_view source)
 {
     GLuint shader = glCreateShader(type);
     GLchar const* source_ptr = source.data();
-    GLint source_length = static_cast<GLint>(source.length());
+    auto source_length = static_cast<GLint>(source.length());
     glShaderSource(shader, 1, &source_ptr, &source_length);
     glCompileShader(shader);
 
