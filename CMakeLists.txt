@@ -53,7 +53,8 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         -fsanitize=leak -fsanitize=undefined"
     )
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /nologo /MP /diagnostics:caret /W4 /permissive- /EHsc")
+	# /diagnostics:caret would be better but seems not detected by VS in the IDE
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /nologo /MP /diagnostics:column /W4 /permissive- /EHsc")
 	set(CMAKE_CXX_FLAGS_DEBUG "/MDd /JMC /RTC1 /ZI")
     set(CMAKE_CXX_FLAGS_RELEASE "/MD /O2 /GL /Gw /fp:fast /D NDEBUG")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELEASE} /Zi")

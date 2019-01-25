@@ -1,59 +1,22 @@
-#include <spdlog/spdlog.h>  // waiting for https://github.com/Microsoft/vcpkg/pull/5175
+#include <spdlog/spdlog.h>  // workaround to be removed after merge of https://github.com/Microsoft/vcpkg/pull/5175
 
-#include <glad/glfw.h>
+#include "main_window.h"
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <tinyfiledialogs.h>
 #include <filesystem>
-#include <memory>
 #include <stdexcept>
 
 
-namespace fractal {
-
-namespace {
-
-struct Glfw {
-    Glfw(const Glfw&) = delete;
-    Glfw& operator=(const Glfw&) = delete;
-    Glfw(Glfw&&) = delete;
-    Glfw& operator=(Glfw&&) = delete;
-
-    Glfw()
-    {
-        if (!glfwInit())
-            throw std::runtime_error{"could not initialize glfw"};
-    }
-
-    ~Glfw()
-    {
-        glfwTerminate();
-    }
-};
-
-
-void loop()
+namespace fractal
 {
-    Glfw glfw;
+namespace
+{
 
-    GLFWwindow* window = glfwCreateWindow(1600, 900, "fractal", nullptr, nullptr);
-    if (!window)
-        throw std::runtime_error{"could not create window"};
-    std::unique_ptr<GLFWwindow, void (*)(GLFWwindow*)> window_raii{window, glfwDestroyWindow};
-
-    glfwMakeContextCurrent(window);
-    if (!gladLoadGL())
-        throw std::runtime_error{"could not load opengl"};
-    glfwSwapInterval(1);
-
-    while (!glfwWindowShouldClose(window)) {
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        glBindTexture(0, 0);
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
+void main_core()
+{
+    MainWindow main_window;
+    main_window.loop();
 }
 
 int main(int /*argc*/, char** /*argv*/)
@@ -69,12 +32,12 @@ int main(int /*argc*/, char** /*argv*/)
 #endif
         spdlog::set_pattern("%^[%H:%M:%S.%f][%t][%l]%$ %v");
         spdlog::info("starting...");
-        loop();
+        main_core();
         spdlog::info("terminating...");
         spdlog::drop_all();
         return 0;
     }
-    catch (const std::exception& ex) {
+    catch (std::exception const& ex) {
         spdlog::critical("critical exception: {}", ex.what());
         tinyfd_messageBox("Critical Exception", ex.what(), "ok", "error", 0);
         return 1;
@@ -82,7 +45,6 @@ int main(int /*argc*/, char** /*argv*/)
 }
 
 }  // namespace
-
 }  // namespace fractal
 
 
