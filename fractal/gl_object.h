@@ -8,10 +8,11 @@
 namespace fractal {
 
 using GlDeleter = void (*)(GLuint id);
-using GlArrayDeleter = void (*)(GLsizei size, GLuint id);
+using GlArrayDeleter = void (*)(GLsizei size, GLuint const* ids);
 
-
-template <GlDeleter Tdeleter>
+// we need to take pointers to make deleters compile time constants
+// because they are loaded at runtime
+template <GlDeleter* Tdeleter>
 struct GlObject {
     static constexpr GlDeleter deleter = Tdeleter;
 
@@ -26,7 +27,7 @@ private:
 };
 
 
-template <GlArrayDeleter Tdeleter, size_t Tsize = 1>
+template <GlArrayDeleter* Tdeleter, size_t Tsize = 1>
 struct GlArrayObject {
     static constexpr GlDeleter deleter = Tdeleter;
     static constexpr size_t size = Tsize;
