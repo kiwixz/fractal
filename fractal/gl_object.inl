@@ -1,3 +1,5 @@
+#pragma once
+
 #include "gl_object.h"
 
 namespace fractal {

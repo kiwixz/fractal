@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gl_object.h"
+#include "scope_exit.h"
 #include <array>
 
 namespace fractal {
@@ -9,7 +10,8 @@ class Quad {
 public:
     Quad();
 
-    void draw() const;
+    [[nodiscard]] ScopeExit bind();
+    void draw() const;  ///< Needs to be bound.
 
 private:
     GlBuffers<2> vertex_buffers_;
