@@ -8,7 +8,7 @@ import subprocess
 from pathlib import Path
 
 
-VCPKG_COMMIT = "c6db2c880a064b29e0b38eda29f19510235fb4c9"
+VCPKG_COMMIT = "61d163a8fcdfec87ae90efbb9b107c3b0372492c"
 VCPKG_LIBS = [
     "fmt",
     "glfw3",
