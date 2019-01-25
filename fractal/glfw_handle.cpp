@@ -15,15 +15,14 @@ std::shared_ptr<void> GlfwHandle::get_instance()
 
     if (std::shared_ptr<void> instance = old_instance.lock())
         return instance;
-    else {
-        if (!glfwInit())
-            throw std::runtime_error{"could not initialize glfw"};
-        instance = {nullptr, [](auto) {
-                        glfwTerminate();
-                    }};
-        old_instance = instance;
-        return instance;
-    }
+
+    if (!glfwInit())
+        throw std::runtime_error{"could not initialize glfw"};
+    std::shared_ptr<void> instance{nullptr, [](auto) {
+                                       glfwTerminate();
+                                   }};
+    old_instance = instance;
+    return instance;
 }
 
 }  // namespace fractal
