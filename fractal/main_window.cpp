@@ -10,6 +10,7 @@ MainWindow::MainWindow() :
 {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 
     GLFWwindow* window = glfwCreateWindow(1600, 900, "fractal", nullptr, nullptr);
     if (!window)
@@ -18,7 +19,7 @@ MainWindow::MainWindow() :
 
     glfwMakeContextCurrent(window);
     if (!gladLoadGLLoader([](const char* name) {
-            return static_cast<void*>(glfwGetProcAddress(name));
+            return reinterpret_cast<void*>(glfwGetProcAddress(name));
         }))
         throw std::runtime_error{"could not load opengl"};
 
