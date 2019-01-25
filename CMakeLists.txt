@@ -93,5 +93,6 @@ local_exe("fractal"
 
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	target_compile_options("glad" PRIVATE "-w")
     target_link_libraries("fractal" "stdc++fs")
 endif ()
