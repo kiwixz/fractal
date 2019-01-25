@@ -49,6 +49,25 @@ private:
     std::array<GLuint, Tsize> ids_ = {};
 };
 
+
+template <size_t Tsize = 1>
+using GlBuffers = GlArrayObject<&glDeleteBuffers, Tsize>;
+template <size_t Tsize = 1>
+using GlFrameBuffers = GlArrayObject<&glDeleteFramebuffers, Tsize>;
+template <size_t Tsize = 1>
+using GlQueries = GlArrayObject<&glDeleteQueries, Tsize>;
+template <size_t Tsize = 1>
+using GlRenderBuffers = GlArrayObject<&glDeleteRenderbuffers, Tsize>;
+template <size_t Tsize = 1>
+using GlSamplers = GlArrayObject<&glDeleteSamplers, Tsize>;
+template <size_t Tsize = 1>
+using GlTextures = GlArrayObject<&glDeleteTextures, Tsize>;
+template <size_t Tsize = 1>
+using GlVertexArrays = GlArrayObject<&glDeleteVertexArrays, Tsize>;
+
+using GlProgram = GlObject<&glDeleteProgram>;
+using GlShader = GlObject<&glDeleteShader>;
+
 }  // namespace fractal
 
 #include "gl_object.inl"
