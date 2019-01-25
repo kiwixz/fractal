@@ -14,7 +14,7 @@ using GlArrayDeleter = void (*)(GLsizei size, GLuint const* ids);
 template <GlDeleter* Tdeleter>
 struct GlObject {
     GlObject() = default;
-    explicit GlObject(GLuint id);
+    GlObject(GLuint id);
     ~GlObject();
     GlObject(GlObject const&) = delete;
     GlObject& operator=(GlObject const&) = delete;
