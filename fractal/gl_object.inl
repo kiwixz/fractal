@@ -5,6 +5,11 @@
 namespace fractal {
 
 template <GlDeleter* Tdeleter>
+GlObject<Tdeleter>::GlObject(GLuint id) :
+    id_{id}
+{}
+
+template <GlDeleter* Tdeleter>
 GlObject<Tdeleter>::~GlObject()
 {
     if (id_ != 0)
