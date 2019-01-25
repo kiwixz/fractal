@@ -3,7 +3,7 @@ project(fractal)
 
 
 function ("local_lib" name)
-    file(GLOB_RECURSE src "${name}/*.cpp" "${name}/*.c")
+    file(GLOB_RECURSE src "${name}/*.cpp" "${name}/*.cxx")
     add_library("${name}" "${src}")
 endfunction ()
 
@@ -13,7 +13,7 @@ function ("local_exe" name)
         message(FATAL_ERROR "unrecognized options: ${args_UNPARSED_ARGUMENTS}")
     endif ()
 
-    file(GLOB_RECURSE src "${name}/*.cpp" "${name}/*.c")
+    file(GLOB_RECURSE src "${name}/*.cpp" "${name}/*.cxx")
     add_executable("${name}" "${src}")
 
     if (NOT "${args_DEPENDS}" STREQUAL "")
@@ -53,7 +53,23 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         -fsanitize=leak -fsanitize=undefined"
     )
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-endif()
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /nologo /MP /diagnostics:caret /W4 /permissive- /EHsc")
+	set(CMAKE_CXX_FLAGS_DEBUG "/MDd /JMC /RTC1 /ZI")
+    set(CMAKE_CXX_FLAGS_RELEASE "/MD /O2 /GL /Gw /fp:fast /D NDEBUG")
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NOLOGO")
+	set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/DEBUG:FASTLINK")
+	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "/LTCG:INCREMENTAL")
+	set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /DEBUG:FULL")
+	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
+	set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
+	set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
+	set(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO}")
+	set(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
+	set(CMAKE_STATIC_LINKER_FLAGS_DEBUG "")
+	set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
+	set(CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO "${CMAKE_STATIC_LINKER_FLAGS_RELEASE}")
+endif ()
 
 
 include_directories("${CMAKE_SOURCE_DIR}")
