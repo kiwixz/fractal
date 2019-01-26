@@ -1,6 +1,7 @@
 #include "main_window.h"
 #include "full_quad.h"
 #include "shader.h"
+#include "texture_stream.h"
 #include <spdlog/spdlog.h>
 #include <stdexcept>
 
@@ -32,7 +33,7 @@ MainWindow::MainWindow() :
         throw std::runtime_error{"could not load opengl"};
 
     glDebugMessageCallback([](GLenum source, GLenum type, GLuint id, GLenum severity,
-                              GLsizei length, GLchar const* message, void const* /*userParam*/) {
+                              GLsizei /*length*/, GLchar const* message, void const* /*userParam*/) {
         spdlog::debug("[opengl] source:{} type:{} id:{} severity:{}\n\t {}",
                       source, type, id, severity, message);
     },
@@ -70,19 +71,26 @@ void MainWindow::loop()
             #version 450
             in vec2 tex_coords;
             out vec4 color;
+            uniform sampler2D tex;
             void main() {
-                color = vec4(0.0f, 0.0f, 1.0f, 1.0f);
+                color = texture2D(tex, tex_coords);
             }
         )";
 
     ShaderProgram program;
-    program.attach(Shader{GL_VERTEX_SHADER, vertex_source});
-    program.attach(Shader{GL_FRAGMENT_SHADER, fragment_source});
+    program.attach({GL_VERTEX_SHADER, vertex_source});
+    program.attach({GL_FRAGMENT_SHADER, fragment_source});
     program.link();
     ScopeExit shader_binding = program.bind();
 
     FullQuad quad;
     ScopeExit quad_binding = quad.bind();
+
+    TextureStream stream{1, 1};
+    uint64_t a = 0x88888888;
+    stream.update(&a);
+    ScopeExit stream_binding = stream.bind();
+
     while (!glfwWindowShouldClose(window_.get())) {
         glClear(GL_COLOR_BUFFER_BIT);
         quad.draw();
