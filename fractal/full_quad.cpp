@@ -5,16 +5,10 @@ namespace fractal {
 
 FullQuad::FullQuad()
 {
-    /*
     constexpr std::array position{-1.f, -1.f,
                                   1.f, -1.f,
                                   -1.f, 1.f,
                                   1.f, 1.f};
-    */
-    constexpr std::array position{-0.5f, -0.5f,
-                                  0.5f, -0.5f,
-                                  -0.5f, 0.5f,
-                                  0.5f, 0.5f};
 
     glCreateVertexArrays(1, vertex_array_.ptr());
     glCreateBuffers(1, vertex_buffer_.ptr());
