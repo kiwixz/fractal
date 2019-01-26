@@ -1,5 +1,4 @@
 #include "main_window.h"
-#include "bind_front.h"
 #include "full_quad.h"
 #include "shader.h"
 #include <spdlog/spdlog.h>
@@ -36,11 +35,11 @@ MainWindow::MainWindow() :
 
     glfwSetWindowUserPointer(window, this);
     glfwSwapInterval(1);
-    glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-        return reinterpret_cast<MainWindow*>(glfwGetWindowUserPointer(window))->on_key(key, scancode, action, mods);
+    glfwSetKeyCallback(window, [](GLFWwindow* win, int key, int scancode, int action, int mods) {
+        return reinterpret_cast<MainWindow*>(glfwGetWindowUserPointer(win))->on_key(key, scancode, action, mods);
     });
-    glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {
-        return reinterpret_cast<MainWindow*>(glfwGetWindowUserPointer(window))->on_framebuffer_size(width, height);
+    glfwSetFramebufferSizeCallback(window, [](GLFWwindow* win, int width, int height) {
+        return reinterpret_cast<MainWindow*>(glfwGetWindowUserPointer(win))->on_framebuffer_size(width, height);
     });
 }
 
