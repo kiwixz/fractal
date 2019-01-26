@@ -65,7 +65,7 @@ script:
                     echo
                     ((++err))
                 fi
-            done < <(git ls-files | grep -E "\.(cpp|h|inl)$")
+            done < <(git ls-files | grep -E "\.(cpp|h)$")
 
             echo -e "\n\e[1;97;44m > Checking with clang-tidy... \e[0m"
             export CXXFLAGS="-isystem /opt/vcpkg/installed/x64-linux/include -Wno-unknown-warning-option"
