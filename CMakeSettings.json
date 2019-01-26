@@ -23,7 +23,7 @@
     },
     {
       "name": "x64-Release",
-      "configurationType": "RelWithDebInfo",
+      "configurationType": "Release",
       "generator": "Ninja",
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "buildRoot": "${projectDir}/build/${name}",
