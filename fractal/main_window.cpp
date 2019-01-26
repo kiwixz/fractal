@@ -9,6 +9,10 @@ namespace fractal {
 MainWindow::MainWindow() :
     window_{nullptr, glfwDestroyWindow}
 {
+    glfwSetErrorCallback([](int error, char const* description) {
+        spdlog::error("[glfw] error {}: {}", error, description);
+    });
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
@@ -22,10 +26,17 @@ MainWindow::MainWindow() :
     window_.reset(window);
 
     glfwMakeContextCurrent(window);
-    if (!gladLoadGLLoader([](const char* name) {
+    if (!gladLoadGLLoader([](char const* name) {
             return reinterpret_cast<void*>(glfwGetProcAddress(name));
         }))
         throw std::runtime_error{"could not load opengl"};
+
+    glDebugMessageCallback([](GLenum source, GLenum type, GLuint id, GLenum severity,
+                              GLsizei length, GLchar const* message, void const* /*userParam*/) {
+        spdlog::debug("[opengl] source:{} type:{} id:{} severity:{}\n\t {}",
+                      source, type, id, severity, message);
+    },
+                           nullptr);
 
     spdlog::info("opened window,\n"
                  "\t opengl version: {}\n"
