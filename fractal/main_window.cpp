@@ -6,6 +6,13 @@
 #include <stdexcept>
 
 namespace fractal {
+namespace {
+
+constexpr int base_width = 1600;
+constexpr int base_height = 1600;
+
+}  // namespace
+
 
 MainWindow::MainWindow() :
     window_{nullptr, glfwDestroyWindow}
@@ -21,7 +28,7 @@ MainWindow::MainWindow() :
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 #endif
 
-    GLFWwindow* window = glfwCreateWindow(1600, 900, "fractal", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(base_width, base_height, "fractal", nullptr, nullptr);
     if (!window)
         throw std::runtime_error{"could not create window"};
     window_.reset(window);
@@ -49,9 +56,6 @@ MainWindow::MainWindow() :
     glfwSwapInterval(1);
     glfwSetKeyCallback(window, [](GLFWwindow* win, int key, int scancode, int action, int mods) {
         return reinterpret_cast<MainWindow*>(glfwGetWindowUserPointer(win))->on_key(key, scancode, action, mods);
-    });
-    glfwSetFramebufferSizeCallback(window, [](GLFWwindow* win, int width, int height) {
-        return reinterpret_cast<MainWindow*>(glfwGetWindowUserPointer(win))->on_framebuffer_size(width, height);
     });
 }
 
@@ -86,13 +90,14 @@ void MainWindow::loop()
     FullQuad quad;
     ScopeExit quad_binding = quad.bind();
 
-    TextureStream stream{1, 1};
-    uint64_t a = 0x88888888;
-    stream.update(&a);
+    TextureStream stream{base_width, base_height};
     ScopeExit stream_binding = stream.bind();
+
+    mandelbrot_.resize(base_width, base_height);
 
     while (!glfwWindowShouldClose(window_.get())) {
         glClear(GL_COLOR_BUFFER_BIT);
+        stream.update(mandelbrot_.generate());
         quad.draw();
         glfwSwapBuffers(window_.get());
         glfwPollEvents();
@@ -107,11 +112,6 @@ void MainWindow::on_key(int key, int /*scancode*/, int action, int mods)
                 glfwSetWindowShouldClose(window_.get(), true);
         }
     }
-}
-
-void MainWindow::on_framebuffer_size(int width, int height)
-{
-    glViewport(0, 0, width, height);
 }
 
 }  // namespace fractal
