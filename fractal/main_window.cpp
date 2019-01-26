@@ -1,6 +1,8 @@
 #include "main_window.h"
+#include "bind_front.h"
 #include "full_quad.h"
 #include "shader.h"
+#include <spdlog/spdlog.h>
 #include <stdexcept>
 
 namespace fractal {
@@ -11,6 +13,9 @@ MainWindow::MainWindow() :
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+#ifdef _DEBUG
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+#endif
 
     GLFWwindow* window = glfwCreateWindow(1600, 900, "fractal", nullptr, nullptr);
     if (!window)
@@ -23,7 +28,20 @@ MainWindow::MainWindow() :
         }))
         throw std::runtime_error{"could not load opengl"};
 
+    spdlog::info("opened window,\n"
+                 "\t opengl version: {}\n"
+                 "\t glsl version: {}",
+                 glGetString(GL_VERSION),
+                 glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+    glfwSetWindowUserPointer(window, this);
     glfwSwapInterval(1);
+    glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+        return reinterpret_cast<MainWindow*>(glfwGetWindowUserPointer(window))->on_key(key, scancode, action, mods);
+    });
+    glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {
+        return reinterpret_cast<MainWindow*>(glfwGetWindowUserPointer(window))->on_framebuffer_size(width, height);
+    });
 }
 
 void MainWindow::loop()
@@ -43,7 +61,7 @@ void MainWindow::loop()
             in vec2 tex_coords;
             out vec4 color;
             void main() {
-                color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+                color = vec4(0.0f, 1.0f, 1.0f, 1.0f);
             }
         )";
 
@@ -61,6 +79,21 @@ void MainWindow::loop()
         glfwSwapBuffers(window_.get());
         glfwPollEvents();
     }
+}
+
+void MainWindow::on_key(int key, int /*scancode*/, int action, int mods)
+{
+    if (action == GLFW_RELEASE) {
+        if (mods == 0) {
+            if (key == GLFW_KEY_ESCAPE)
+                glfwSetWindowShouldClose(window_.get(), true);
+        }
+    }
+}
+
+void MainWindow::on_framebuffer_size(int width, int height)
+{
+    glViewport(0, 0, width, height);
 }
 
 }  // namespace fractal
