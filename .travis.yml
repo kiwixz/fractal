@@ -50,10 +50,8 @@ script:
             cmake -G Ninja "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_BUILD_TYPE=Release" "../.."
             ninja
             echo
-        '
 
-    - |
-        docker run --rm "$DOCKER_IMAGE" /bin/bash -c '
+
             err=0
 
             echo -e "\n\e[1;97;44m > Checking style with clang-format... \e[0m"
@@ -68,12 +66,12 @@ script:
             done < <(git ls-files | grep -E "\.(cpp|h)$")
 
             echo -e "\n\e[1;97;44m > Checking with clang-tidy... \e[0m"
-            export CXXFLAGS="-isystem /opt/vcpkg/installed/x64-linux/include -Wno-unknown-warning-option"
-            mkdir "build"
-            cd "build"
-            cmake -G Ninja "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" ".."
+            CXXFLAGS+="-w"
+            mkdir -p "build/clang-tidy"
+            cd "build/clang-tidy"
+            cmake -G Ninja "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" "../.."
             ninja
-            SRC="$(git ls-files .. | grep -E '\.cpp$')"
+            SRC="$(git ls-files '../..' | grep -E '\.cpp$')"
             clang-tidy -quiet -p "compile_commands.json" -warnings-as-errors "*" $SRC
             ((err += $?))
 
