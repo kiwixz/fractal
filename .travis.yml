@@ -72,6 +72,7 @@ script:
             mkdir "build"
             cd "build"
             cmake -G Ninja "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" ".."
+            ninja
             SRC="$(git ls-files .. | grep -E '\.cpp$')"
             clang-tidy -quiet -p "compile_commands.json" -warnings-as-errors "*" $SRC
             ((err += $?))
