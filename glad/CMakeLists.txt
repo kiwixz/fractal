@@ -1,16 +1,13 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.11)
+include("FetchContent")
 
+set(target "glad")
 
-configure_file("CMakeLists.txt.in" "external/CMakeLists.txt")
-execute_process(
-    COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" "."
-    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/external"
+FetchContent_Populate(
+    "${target}"
+    GIT_REPOSITORY "https://github.com/Dav1dde/glad.git"
+    GIT_TAG "v0.1.28"
 )
-execute_process(
-    COMMAND "${CMAKE_COMMAND}" --build "."
-    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/external"
-)
-
 
 set(GLAD_PROFILE "core")
 set(GLAD_API "gl=4.5")
@@ -19,8 +16,6 @@ set(GLAD_REPRODUCIBLE "ON")
 set(GLAD_EXPORT "OFF")
 set(GLAD_INSTALL "OFF")
 
-
-add_subdirectory("${CMAKE_CURRENT_BINARY_DIR}/src" "${CMAKE_CURRENT_BINARY_DIR}/build")
-
+add_subdirectory("${${target}_SOURCE_DIR}" "${${target}_BINARY_DIR}")
 
 target_include_directories("glad" INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
