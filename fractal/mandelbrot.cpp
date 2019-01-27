@@ -17,7 +17,7 @@ void Mandelbrot::resize(int width, int height)
 uint8_t* Mandelbrot::generate()
 {
     for (uint8_t& color : pixels_)
-        color = rand();
+        color = 0x44;
 
     return pixels_.data();
 }
