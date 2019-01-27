@@ -51,7 +51,10 @@ script:
             ninja
             echo
 
+            cd "../.."
 
+
+            set +e
             err=0
 
             echo -e "\n\e[1;97;44m > Checking style with clang-format... \e[0m"
