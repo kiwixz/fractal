@@ -37,12 +37,10 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
     set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
     set(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
-    set(CMAKE_STATIC_LINKER_FLAGS_DEBUG "")  # /DEBUG not silently ignored before VS2019
-    set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
+    set(CMAKE_STATIC_LINKER_FLAGS_DEBUG "")    # /DEBUG not silently ignored before VS2019
+    set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "")  #
 endif ()
 
-include_directories("${CMAKE_SOURCE_DIR}")
 
-
-add_subdirectory("fractal")
 add_subdirectory("glad")
+add_subdirectory("fractal")

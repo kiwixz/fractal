@@ -10,9 +10,6 @@ find_package("fmt" CONFIG REQUIRED)
 find_package("glfw3" CONFIG REQUIRED)
 find_package("spdlog" CONFIG REQUIRED)
 
-add_dependencies("${target}"
-    "glad"
-)
 target_link_libraries("${target}"
     "glad"
 
