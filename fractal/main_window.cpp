@@ -8,8 +8,8 @@
 namespace fractal {
 namespace {
 
-constexpr int base_width = 1600;
-constexpr int base_height = 1600;
+constexpr int base_width = 1280;
+constexpr int base_height = 720;
 
 }  // namespace
 
