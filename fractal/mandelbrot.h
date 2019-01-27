@@ -10,10 +10,10 @@ struct Mandelbrot {
     Mandelbrot(int width, int height);
 
     void resize(int width, int height);
-    uint8_t* generate();  ///< pointer may be invalidated after any interaction with this object
+    uint32_t* generate();  ///< pointer may be invalidated after any interaction with this object
 
 private:
-    std::vector<uint8_t> pixels_;
+    std::vector<uint32_t> pixels_;
     int width_;
     int height_;
 
@@ -23,7 +23,7 @@ private:
     float x_size_ = 1.f - x_offset_;
     float y_size_ = 1.f - y_offset_;
 
-    void color(int x, int y, int iterations);
+    uint32_t color(int iterations);
 };
 
 }  // namespace fractal

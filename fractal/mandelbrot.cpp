@@ -13,10 +13,10 @@ void Mandelbrot::resize(int width, int height)
 {
     width_ = width;
     height_ = height;
-    pixels_.resize(width * height * 3);
+    pixels_.resize(width * height);
 }
 
-uint8_t* Mandelbrot::generate()
+uint32_t* Mandelbrot::generate()
 {
     using Clock = std::chrono::high_resolution_clock;
     Clock::time_point start = Clock::now();
@@ -45,7 +45,7 @@ uint8_t* Mandelbrot::generate()
                 y = y_tmp;
                 ++iterations;
             }
-            color(pixel_x, pixel_y, iterations);
+            pixels_[pixel_y * width_ + pixel_x] = color(iterations);
         }
 
     Clock::time_point end = Clock::now();
@@ -54,13 +54,11 @@ uint8_t* Mandelbrot::generate()
     return pixels_.data();
 }
 
-void Mandelbrot::color(int x, int y, int iterations)
+uint32_t Mandelbrot::color(int iterations)
 {
-    uint8_t p = static_cast<uint8_t>(std::numeric_limits<uint8_t>::max() * iterations / max_iterations_);
-    int pixel_position = (y * width_ + x) * 3;
-    pixels_[pixel_position + 0] = p;
-    pixels_[pixel_position + 1] = p;
-    pixels_[pixel_position + 2] = p;
+    uint32_t p = std::numeric_limits<uint8_t>::max() * iterations / max_iterations_;
+    p |= (p << 8) | (p << 16);
+    return p | 0xff000000;
 }
 
 }  // namespace fractal

@@ -13,7 +13,7 @@ struct TextureStream {
 
     template <typename T>
     void update(T const* pixels,
-                GLenum format = GL_RGB, GLenum type = GL_UNSIGNED_BYTE,
+                GLenum format = GL_BGR, GLenum type = GL_UNSIGNED_BYTE,
                 int x_offset = 0, int y_offset = 0, int width = 0, int height = 0);
 
 private:

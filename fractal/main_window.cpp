@@ -97,7 +97,7 @@ void MainWindow::loop()
 
     while (!glfwWindowShouldClose(window_.get())) {
         glClear(GL_COLOR_BUFFER_BIT);
-        stream.update(mandelbrot_.generate());
+        stream.update(mandelbrot_.generate(), GL_BGRA);
         quad.draw();
         glfwSwapBuffers(window_.get());
         glfwPollEvents();
