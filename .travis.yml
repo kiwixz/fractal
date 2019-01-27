@@ -47,7 +47,7 @@ script:
             echo -e "\n\e[1;97;44m > Building release... \e[0m"
             mkdir "../release"
             cd "../release"
-            cmake -G Ninja "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_BUILD_TYPE=RelWithDebInfo" "../.."
+            cmake -G Ninja "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_BUILD_TYPE=Release" "../.."
             ninja
             echo
         '
@@ -71,7 +71,7 @@ script:
             export CXXFLAGS="-isystem /opt/vcpkg/installed/x64-linux/include -Wno-unknown-warning-option"
             mkdir "build"
             cd "build"
-            cmake -G Ninja "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_BUILD_TYPE=RelWithDebInfo" ".."
+            cmake -G Ninja "-DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake" ".."
             cd ..
             SRC="$(git ls-files | grep -E '\.cpp$')"
             clang-tidy -quiet -p "build/compile_commands.json" -warnings-as-errors "*" $SRC
