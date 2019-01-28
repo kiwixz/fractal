@@ -3,6 +3,7 @@
 #include "thread_pool.h"
 #include <cstdint>
 #include <vector>
+#include <queue>
 
 namespace fractal {
 
@@ -23,6 +24,7 @@ private:
 
     std::unique_ptr<ThreadPool> thread_pool_ =
             std::make_unique<ThreadPool>(std::thread::hardware_concurrency());
+    std::queue<std::future<void>> futures_;
 
     float x_offset_ = -2.5;
     float y_offset_ = -1;

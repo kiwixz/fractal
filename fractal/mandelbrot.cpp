@@ -28,37 +28,60 @@ void Mandelbrot::set_max_iterations(int max_iterations)
 
 uint32_t* Mandelbrot::generate()
 {
+    constexpr int work_divisions = 8;
+
     using Clock = std::chrono::high_resolution_clock;
     Clock::time_point start = Clock::now();
 
     float dx = x_size_ / width_;
     float dy = y_size_ / height_;
 
-    for (int pixel_y = 0; pixel_y < height_; ++pixel_y)
-        for (int pixel_x = 0; pixel_x < width_; ++pixel_x) {
-            float real_x = x_offset_ + dx * pixel_x;
-            float real_y = y_offset_ + dy * pixel_y;
-            float x = 0;
-            float y = 0;
+    auto add_work = [&](int from_y, int to_y) {
+        futures_.push(thread_pool_->submit([this, &dx, &dy, from_y, to_y] {
+            for (int pixel_y = from_y; pixel_y < to_y; ++pixel_y) {
+                for (int pixel_x = 0; pixel_x < width_; ++pixel_x) {
+                    float real_x = x_offset_ + dx * pixel_x;
+                    float real_y = y_offset_ + dy * pixel_y;
+                    float x = 0;
+                    float y = 0;
 
-            int iterations = 0;
-            while (iterations < max_iterations_ && x * x + y * y <= 2 * 2) {
-                if (x * x + y * y > 2 * 2)
-                    break;
+                    int iterations = 0;
+                    while (iterations < max_iterations_ && x * x + y * y <= 2 * 2) {
+                        float x_tmp = x * x - y * y + real_x;
+                        float y_tmp = 2 * x * y + real_y;
+                        if (x_tmp == x && y_tmp == y) {
+                            iterations = max_iterations_;
+                            break;
+                        }
 
-                float x_tmp = x * x - y * y + real_x;
-                float y_tmp = 2 * x * y + real_y;
-                if (x_tmp == x && y_tmp == y) {
-                    iterations = max_iterations_;
-                    break;
+                        x = x_tmp;
+                        y = y_tmp;
+                        ++iterations;
+                    }
+                    pixels_[pixel_y * width_ + pixel_x] = color(x, y, iterations);
                 }
-
-                x = x_tmp;
-                y = y_tmp;
-                ++iterations;
             }
-            pixels_[pixel_y * width_ + pixel_x] = color(x, y, iterations);
-        }
+        }));
+    };
+
+    // we distribute work by divisions for a better handling of unbalanced pictures
+    int division_size = height_ / work_divisions;
+    int from_y = 0;
+    for (int work = 0; work < thread_pool_->size(); ++work) {
+        int to_y = from_y + (division_size - from_y) / (thread_pool_->size() - work);
+        for (int division = 0; division < work_divisions; ++division)
+            add_work(division * division_size + from_y, division * division_size + to_y);
+        from_y = to_y;
+    }
+
+    int work_done = division_size * work_divisions;
+    if (work_done < height_)
+        add_work(work_done, height_);
+
+    while (!futures_.empty()) {
+        futures_.front().get();
+        futures_.pop();
+    }
 
     Clock::time_point end = Clock::now();
     spdlog::info("[mandelbrot] generated in {}ms", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
