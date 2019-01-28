@@ -4,9 +4,10 @@
 
 namespace fractal {
 
-Mandelbrot::Mandelbrot(int width, int height)
+Mandelbrot::Mandelbrot(int width, int height, int max_iterations)
 {
     resize(width, height);
+    set_max_iterations(max_iterations);
 }
 
 void Mandelbrot::resize(int width, int height)
@@ -14,6 +15,15 @@ void Mandelbrot::resize(int width, int height)
     width_ = width;
     height_ = height;
     pixels_.resize(width * height);
+}
+
+void Mandelbrot::set_max_iterations(int max_iterations)
+{
+    max_iterations_ = max_iterations;
+    palette_.resize(max_iterations + 1);
+    for (int i = 0; i <= max_iterations; ++i) {
+        palette_[i] = hsv_to_bgr(100.f * i / max_iterations, 1.f, 1.f);
+    }
 }
 
 uint32_t* Mandelbrot::generate()
@@ -56,9 +66,58 @@ uint32_t* Mandelbrot::generate()
 
 uint32_t Mandelbrot::color(int iterations)
 {
-    uint32_t p = std::numeric_limits<uint8_t>::max() * iterations / max_iterations_;
-    p |= (p << 8) | (p << 16);
-    return p | 0xff000000;
+    return palette_[iterations];
+}
+
+uint32_t Mandelbrot::hsv_to_bgr(float h, float s, float v)
+{
+    float r, g, b;
+
+    h /= 60;
+    int i = floor(h);
+    float f = h - i;
+    float p = v * (1 - s);
+    float q = v * (1 - s * f);
+    float t = v * (1 - s * (1 - f));
+
+    switch (i) {
+    case 0:
+        r = v;
+        g = t;
+        b = p;
+        break;
+    case 1:
+        r = q;
+        g = v;
+        b = p;
+        break;
+    case 2:
+        r = p;
+        g = v;
+        b = t;
+        break;
+    case 3:
+        r = p;
+        g = q;
+        b = v;
+        break;
+    case 4:
+        r = t;
+        g = p;
+        b = v;
+        break;
+    case 5:
+        r = v;
+        g = p;
+        b = q;
+        break;
+    default:
+        break;
+    }
+
+    return static_cast<int>(r * 255) << 16
+           | static_cast<int>(g * 255) << 8
+           | static_cast<int>(b * 255);
 }
 
 }  // namespace fractal
