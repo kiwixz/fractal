@@ -2,8 +2,8 @@
 
 #include "thread_pool.h"
 #include <cstdint>
-#include <vector>
 #include <queue>
+#include <vector>
 
 namespace fractal {
 
