@@ -71,7 +71,9 @@ uint32_t Mandelbrot::color(int iterations)
 
 uint32_t Mandelbrot::hsv_to_bgr(float h, float s, float v)
 {
-    float r, g, b;
+    float r = 0;
+    float g = 0;
+    float b = 0;
 
     h /= 60;
     int i = floor(h);
