@@ -21,9 +21,9 @@ void Mandelbrot::resize(int width, int height)
 void Mandelbrot::set_max_iterations(int max_iterations)
 {
     max_iterations_ = max_iterations;
-    palette_.resize(max_iterations + 1);
-    for (int i = 0; i <= max_iterations; ++i)
-        palette_[i] = hsv_to_bgr(240 + 120.f * i / max_iterations, 1.f, 1.f);
+    palette_.resize(max_iterations_ + 1);
+    for (int i = 0; i <= max_iterations_; ++i)
+        palette_[i] = hsv_to_bgr(240 + 120.f * i / max_iterations_, 1.f, 1.f);
 }
 
 uint32_t* Mandelbrot::generate()
@@ -71,8 +71,8 @@ uint32_t Mandelbrot::color(float x, float y, int iterations)
     if (iterations == max_iterations_)
         return palette_[max_iterations_];
 
-    float log_zn = std::log(x * x + y * y) / 2;
-    float nu = std::log(log_zn / std::log(2)) / std::log(2);
+    float log_zn = std::logf(x * x + y * y) / 2;
+    float nu = std::logf(log_zn / std::logf(2)) / std::logf(2);
 
     float smooth_iterations = iterations + 1 - nu;
     int smooth_iterations_int = static_cast<int>(smooth_iterations);
