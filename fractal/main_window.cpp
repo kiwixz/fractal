@@ -93,7 +93,7 @@ void MainWindow::loop()
     TextureStream stream{base_width, base_height};
     ScopeExit stream_binding = stream.bind();
 
-    mandelbrot_ = {base_width, base_height, 64};
+    mandelbrot_ = {base_width, base_height, 128};
 
     while (!glfwWindowShouldClose(window_.get())) {
         glClear(GL_COLOR_BUFFER_BIT);

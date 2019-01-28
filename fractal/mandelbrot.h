@@ -25,7 +25,7 @@ private:
     float x_size_ = 1 - x_offset_;
     float y_size_ = 1 - y_offset_;
 
-    uint32_t color(int iterations);
+    uint32_t color(float x, float y, int iterations);
     uint32_t hsv_to_bgr(float h, float s, float v);
 };
 
