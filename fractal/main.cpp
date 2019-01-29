@@ -1,4 +1,5 @@
 #include "main_window.h"
+#include "settings.h"
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <tinyfiledialogs.h>
@@ -8,17 +9,19 @@
 namespace fractal {
 namespace {
 
-void main_core()
+void main_impl(int argc, char** argv)
 {
     glfwSetErrorCallback([](int error, char const* description) {
         spdlog::error("[glfw] error {}: {}", error, description);
     });
 
-    MainWindow main_window;
-    main_window.loop();
+    if (settings::parse(argc, argv))
+        return;
+
+    MainWindow{}.loop();
 }
 
-int main(int /*argc*/, char** /*argv*/)
+int main(int argc, char** argv)
 {
     try {
         std::string log_file_path = (std::filesystem::temp_directory_path() / "fractal.log").string();
@@ -31,7 +34,7 @@ int main(int /*argc*/, char** /*argv*/)
 #endif
         spdlog::set_pattern("%^[%H:%M:%S.%f][%t][%l]%$ %v");
         spdlog::info("starting...");
-        main_core();
+        main_impl(argc, argv);
         spdlog::info("terminating...");
         spdlog::drop_all();
         return 0;

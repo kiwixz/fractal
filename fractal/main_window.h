@@ -23,6 +23,7 @@ private:
         GlfwHandle handle_;
     };
 
+    Glfw glfw_;
     GlfwWindow window_;
     ShaderProgram program_;
     FullQuad quad_;

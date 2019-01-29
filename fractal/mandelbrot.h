@@ -1,5 +1,6 @@
 #pragma once
 
+#include "settings.h"
 #include "thread_pool.h"
 #include <cstdint>
 #include <queue>
@@ -21,15 +22,13 @@ private:
     int width_;
     int height_;
     int max_iterations_;
-
+    float x_min_ = settings::get().x_min;
+    float y_min_ = settings::get().y_min;
+    float x_max_ = settings::get().x_max;
+    float y_max_ = settings::get().y_max;
     std::unique_ptr<ThreadPool> thread_pool_ =
             std::make_unique<ThreadPool>(std::thread::hardware_concurrency());
     std::queue<std::future<void>> futures_;
-
-    float x_offset_ = -2.1;
-    float y_offset_ = -1.2;
-    float x_size_ = .6 - x_offset_;
-    float y_size_ = 1.2 - y_offset_;
 
     uint32_t color(float x, float y, int iterations);
     uint32_t hsv_to_bgr(float h, float s, float v);
