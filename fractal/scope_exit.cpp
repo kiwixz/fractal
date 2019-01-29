@@ -23,4 +23,9 @@ ScopeExit& ScopeExit::operator=(ScopeExit&& other) noexcept
     return *this;
 }
 
+void ScopeExit::cancel()
+{
+    function_ = {};
+}
+
 }  // namespace fractal

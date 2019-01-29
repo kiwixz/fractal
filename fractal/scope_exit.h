@@ -13,6 +13,8 @@ struct ScopeExit {
     ScopeExit(ScopeExit&& other) noexcept;
     ScopeExit& operator=(ScopeExit&& other) noexcept;
 
+    void cancel();
+
 private:
     std::function<void()> function_;
 };

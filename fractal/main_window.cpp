@@ -32,6 +32,9 @@ MainWindow::MainWindow() :
     glfwSetKeyCallback(window_, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
         return reinterpret_cast<MainWindow*>(glfwGetWindowUserPointer(window))->on_key(key, scancode, action, mods);
     });
+    glfwSetFramebufferSizeCallback(window_, [](GLFWwindow* window, int width, int height) {
+        return reinterpret_cast<MainWindow*>(glfwGetWindowUserPointer(window))->on_resize(width, height);
+    });
 
     constexpr std::string_view vertex_source = R"(
             #version 450
@@ -66,8 +69,12 @@ void MainWindow::loop()
         glClear(GL_COLOR_BUFFER_BIT);
         stream_.update(mandelbrot_.generate(), GL_BGRA);
         quad_.draw();
+
         glfwSwapBuffers(window_);
         glfwPollEvents();
+
+        stream_binding.cancel();
+        stream_binding = stream_.bind();  // stream may have been resized
     }
 }
 
@@ -79,6 +86,13 @@ void MainWindow::on_key(int key, int /*scancode*/, int action, int mods)
                 glfwSetWindowShouldClose(window_, true);
         }
     }
+}
+
+void MainWindow::on_resize(int width, int height)
+{
+    glViewport(0, 0, width, height);
+    stream_ = {width, height};
+    mandelbrot_.resize(width, height);
 }
 
 }  // namespace fractal
