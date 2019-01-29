@@ -26,10 +26,10 @@ private:
             std::make_unique<ThreadPool>(std::thread::hardware_concurrency());
     std::queue<std::future<void>> futures_;
 
-    float x_offset_ = -2.5;
-    float y_offset_ = -1;
-    float x_size_ = 1 - x_offset_;
-    float y_size_ = 1 - y_offset_;
+    float x_offset_ = -2.1;
+    float y_offset_ = -1.2;
+    float x_size_ = .6 - x_offset_;
+    float y_size_ = 1.2 - y_offset_;
 
     uint32_t color(float x, float y, int iterations);
     uint32_t hsv_to_bgr(float h, float s, float v);

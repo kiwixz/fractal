@@ -21,9 +21,36 @@ void Mandelbrot::resize(int width, int height)
 void Mandelbrot::set_max_iterations(int max_iterations)
 {
     max_iterations_ = max_iterations;
-    palette_.resize(max_iterations_ + 1);
-    for (int i = 0; i <= max_iterations_; ++i)
-        palette_[i] = hsv_to_bgr(240 + 120.f * i / max_iterations_, 1.f, 1.f);
+    int palette_size = max_iterations + 1;
+    palette_.resize(palette_size);
+
+    struct Color {
+        float p, h, s, v;
+    };
+    constexpr std::array colors = {Color{0.f, 240.f, 1.f, .5f},
+                                   Color{.18f, 200.f, .5f, 1.f},
+                                   Color{.2f, 200.f, 0.f, 1.f},
+                                   Color{.2f, 33.f, 0.f, 1.f},
+                                   Color{.3f, 33.f, 1.f, 1.f},
+                                   Color{.5f, 33.f, 1.f, 0.f},
+                                   Color{1.f, 33.f, 1.f, 0.f}};
+
+    for (int i = 0; i < palette_size; ++i) {
+        float p = static_cast<float>(i) / palette_size;
+
+        auto it = std::find_if(colors.begin(), colors.end(), [&](Color const& color) {
+            return color.p > p;
+        });
+        Color const& b = *it;
+        Color const& a = *--it;
+
+        float b_k = (p - a.p) / (b.p - a.p);
+        float a_k = 1 - b_k;
+
+        palette_[i] = hsv_to_bgr(a.h * a_k + b.h * b_k,
+                                 a.s * a_k + b.s * b_k,
+                                 a.v * a_k + b.v * b_k);
+    }
 }
 
 uint32_t* Mandelbrot::generate()
@@ -95,7 +122,7 @@ uint32_t Mandelbrot::color(float x, float y, int iterations)
         return palette_[max_iterations_];
 
     float log_zn = std::log(x * x + y * y) / 2;
-    float nu = std::log(log_zn / std::log(2)) / std::log(2);
+    float nu = std::log(log_zn / std::log(2.f)) / std::log(2.f);
 
     float smooth_iterations = iterations + 1 - nu;
     int smooth_iterations_int = static_cast<int>(smooth_iterations);
@@ -127,7 +154,7 @@ uint32_t Mandelbrot::hsv_to_bgr(float h, float s, float v)
     float g = 0;
     float b = 0;
 
-    h /= 60;
+    h = std::fmod(h, 360.f) / 60;
     int i = static_cast<int>(h);
     float f = h - i;
     float p = v * (1 - s);
