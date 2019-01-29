@@ -1,7 +1,4 @@
 #include "main_window.h"
-#include "full_quad.h"
-#include "shader.h"
-#include "texture_stream.h"
 #include <spdlog/spdlog.h>
 #include <stdexcept>
 
@@ -26,17 +23,16 @@ MainWindow::Glfw::Glfw()
 
 
 MainWindow::MainWindow() :
-    window_{base_width, base_height, "fractal"}
+    window_{base_width, base_height, "fractal"},
+    stream_{base_width, base_height},
+    mandelbrot_{base_width, base_height, 128}
 {
     glfwSetWindowUserPointer(window_, this);
     glfwSwapInterval(1);
     glfwSetKeyCallback(window_, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
         return reinterpret_cast<MainWindow*>(glfwGetWindowUserPointer(window))->on_key(key, scancode, action, mods);
     });
-}
 
-void MainWindow::loop()
-{
     constexpr std::string_view vertex_source = R"(
             #version 450
             layout(location=0) in vec2 pos;
@@ -46,7 +42,6 @@ void MainWindow::loop()
                 tex_coords = (pos + 1) / 2;
             }
         )";
-
     constexpr std::string_view fragment_source = R"(
             #version 450
             in vec2 tex_coords;
@@ -56,25 +51,21 @@ void MainWindow::loop()
                 color = texture2D(tex, tex_coords);
             }
         )";
+    program_.attach({GL_VERTEX_SHADER, vertex_source});
+    program_.attach({GL_FRAGMENT_SHADER, fragment_source});
+    program_.link();
+}
 
-    ShaderProgram program;
-    program.attach({GL_VERTEX_SHADER, vertex_source});
-    program.attach({GL_FRAGMENT_SHADER, fragment_source});
-    program.link();
-    ScopeExit shader_binding = program.bind();
-
-    FullQuad quad;
-    ScopeExit quad_binding = quad.bind();
-
-    TextureStream stream{base_width, base_height};
-    ScopeExit stream_binding = stream.bind();
-
-    mandelbrot_ = {base_width, base_height, 128};
+void MainWindow::loop()
+{
+    ScopeExit shader_binding = program_.bind();
+    ScopeExit quad_binding = quad_.bind();
+    ScopeExit stream_binding = stream_.bind();
 
     while (!glfwWindowShouldClose(window_)) {
         glClear(GL_COLOR_BUFFER_BIT);
-        stream.update(mandelbrot_.generate(), GL_BGRA);
-        quad.draw();
+        stream_.update(mandelbrot_.generate(), GL_BGRA);
+        quad_.draw();
         glfwSwapBuffers(window_);
         glfwPollEvents();
     }

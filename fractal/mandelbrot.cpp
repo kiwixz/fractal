@@ -28,8 +28,6 @@ void Mandelbrot::set_max_iterations(int max_iterations)
 
 uint32_t* Mandelbrot::generate()
 {
-    constexpr int work_divisions = 8;
-
     using Clock = std::chrono::high_resolution_clock;
     Clock::time_point start = Clock::now();
 
@@ -65,10 +63,12 @@ uint32_t* Mandelbrot::generate()
     };
 
     // we distribute work by divisions for a better handling of unbalanced pictures
+    constexpr int work_divisions = 8;
     int division_size = height_ / work_divisions;
     int from_y = 0;
-    for (int work = 0; work < static_cast<int>(thread_pool_->size()); ++work) {
-        int to_y = from_y + (division_size - from_y) / (thread_pool_->size() - work);
+    int nr_works = static_cast<int>(thread_pool_->size());
+    for (int work = 0; work < nr_works; ++work) {
+        int to_y = from_y + (division_size - from_y) / (nr_works - work);
         for (int division = 0; division < work_divisions; ++division)
             add_work(division * division_size + from_y, division * division_size + to_y);
         from_y = to_y;
