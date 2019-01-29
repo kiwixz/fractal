@@ -3,10 +3,9 @@
 namespace fractal::settings {
 
 struct Settings {
-    float x_min;
-    float x_max;
-    float y_min;
-    float y_max;
+    float x;
+    float y;
+    float zoom;
 };
 
 bool parse(int argc, char** argv);  ///< Returns true if should exit.

@@ -53,20 +53,24 @@ void Mandelbrot::set_max_iterations(int max_iterations)
     }
 }
 
-uint32_t* Mandelbrot::generate()
+uint32_t const* Mandelbrot::generate(float x, float y, float zoom)
 {
     using Clock = std::chrono::high_resolution_clock;
     Clock::time_point start = Clock::now();
 
-    float dx = (x_max_ - x_min_) / width_;
-    float dy = (y_max_ - y_min_) / height_;
+    float y_size = 1 / zoom;
+    float x_size = y_size * width_ / height_;
+    float x_min = x - x_size / 2;
+    float y_min = y - y_size / 2;
+    float dx = x_size / width_;
+    float dy = y_size / height_;
 
     auto add_work = [&](int from_y, int to_y) {
-        futures_.push(thread_pool_->submit([this, &dx, &dy, from_y, to_y] {
+        futures_.push(thread_pool_->submit([=] {
             for (int pixel_y = from_y; pixel_y < to_y; ++pixel_y) {
                 for (int pixel_x = 0; pixel_x < width_; ++pixel_x) {
-                    float real_x = x_min_ + dx * pixel_x;
-                    float real_y = y_min_ + dy * pixel_y;
+                    float real_x = x_min + dx * pixel_x;
+                    float real_y = y_min + dy * pixel_y;
                     float x = 0;
                     float y = 0;
 

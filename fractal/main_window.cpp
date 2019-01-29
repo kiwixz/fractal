@@ -5,8 +5,8 @@
 namespace fractal {
 namespace {
 
-constexpr int base_width = 1280;
-constexpr int base_height = 720;
+constexpr int base_width = 999;
+constexpr int base_height = 888;
 
 }  // namespace
 
@@ -67,7 +67,11 @@ void MainWindow::loop()
 
     while (!glfwWindowShouldClose(window_)) {
         glClear(GL_COLOR_BUFFER_BIT);
-        stream_.update(mandelbrot_.generate(), GL_BGRA);
+
+        const uint32_t* pixels = mandelbrot_.generate(settings::get().x,
+                                                      settings::get().y,
+                                                      settings::get().zoom);
+        stream_.update(pixels, GL_BGRA);
         quad_.draw();
 
         glfwSwapBuffers(window_);
