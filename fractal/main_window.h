@@ -1,6 +1,7 @@
 #pragma once
 
 #include "glfw_handle.h"
+#include "glfw_window.h"
 #include "mandelbrot.h"
 #include <glad/glfw.h>
 
@@ -12,8 +13,14 @@ struct MainWindow {
     void loop();
 
 private:
-    GlfwHandle glfw_handle_;
-    std::unique_ptr<GLFWwindow, void (*)(GLFWwindow*)> window_;
+    struct Glfw {
+        Glfw();
+
+    private:
+        GlfwHandle handle_;
+    };
+
+    GlfwWindow window_;
     Mandelbrot mandelbrot_;
 
     void on_key(int key, int scancode, int action, int mods);

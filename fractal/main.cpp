@@ -10,6 +10,10 @@ namespace {
 
 void main_core()
 {
+    glfwSetErrorCallback([](int error, char const* description) {
+        spdlog::error("[glfw] error {}: {}", error, description);
+    });
+
     MainWindow main_window;
     main_window.loop();
 }
