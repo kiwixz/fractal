@@ -28,11 +28,18 @@ void Mandelbrot::set_max_iterations(int max_iterations)
         float p, h, s, v;
     };
     constexpr std::array colors = {Color{0.f, 240.f, 1.f, .5f},
-                                   Color{.18f, 200.f, .5f, 1.f},
+                                   Color{.1f, 200.f, .5f, 1.f},
                                    Color{.2f, 200.f, 0.f, 1.f},
                                    Color{.2f, 33.f, 0.f, 1.f},
                                    Color{.3f, 33.f, 1.f, 1.f},
-                                   Color{.5f, 33.f, 1.f, 0.f},
+                                   Color{.4f, 33.f, 1.f, 0.f},
+                                   Color{.4f, 240.f, 1.f, 0.f},
+                                   Color{.5f, 240.f, 1.f, .5f},
+                                   Color{.6f, 200.f, .5f, 1.f},
+                                   Color{.7f, 200.f, 0.f, 1.f},
+                                   Color{.7f, 33.f, 0.f, 1.f},
+                                   Color{.8f, 33.f, 1.f, 1.f},
+                                   Color{.9f, 16.f, 1.f, 1.f},
                                    Color{1.f, 33.f, 1.f, 0.f}};
 
     for (int i = 0; i < palette_size; ++i) {

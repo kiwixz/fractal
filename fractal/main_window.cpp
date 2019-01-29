@@ -25,7 +25,7 @@ MainWindow::Glfw::Glfw()
 MainWindow::MainWindow() :
     window_{base_width, base_height, "fractal"},
     stream_{base_width, base_height},
-    mandelbrot_{base_width, base_height, 128}
+    mandelbrot_{base_width, base_height, 256}
 {
     glfwSetWindowUserPointer(window_, this);
     glfwSwapInterval(1);
