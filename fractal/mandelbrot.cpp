@@ -94,7 +94,7 @@ uint32_t const* Mandelbrot::generate(float x, float y, float zoom)
                         y = y_tmp;
                         ++iterations;
                     }
-                    pixels_[pixel_y * width_ + pixel_x] = color(x, y, iterations);
+                    pixels_[pixel_y * width_ + pixel_x] = color(x, y, iterations, max_iterations_);
                 }
             }
         }));
@@ -127,10 +127,10 @@ uint32_t const* Mandelbrot::generate(float x, float y, float zoom)
     return pixels_.data();
 }
 
-uint32_t Mandelbrot::color(float x, float y, int iterations)
+uint32_t Mandelbrot::color(float x, float y, int iterations, int max_iterations)
 {
-    if (iterations == max_iterations_)
-        return palette_[max_iterations_];
+    if (iterations == max_iterations)
+        return 0xff000000;
 
     float log_zn = std::log(x * x + y * y) / 2;
     float nu = std::log(log_zn / std::log(2.f)) / std::log(2.f);
@@ -139,8 +139,8 @@ uint32_t Mandelbrot::color(float x, float y, int iterations)
     int smooth_iterations_int = static_cast<int>(smooth_iterations);
 
     // interpolate a and b
-    uint32_t a = palette_[smooth_iterations_int];
-    uint32_t b = palette_[smooth_iterations_int + 1];
+    uint32_t a = palette_[smooth_iterations_int % palette_.size()];
+    uint32_t b = palette_[(smooth_iterations_int + 1) % palette_.size()];
 
     float b_k = smooth_iterations - smooth_iterations_int;
     float a_k = 1 - b_k;

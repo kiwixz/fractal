@@ -26,7 +26,7 @@ private:
             std::make_unique<ThreadPool>(std::thread::hardware_concurrency());
     std::queue<std::future<void>> futures_;
 
-    uint32_t color(float x, float y, int iterations);
+    uint32_t color(float x, float y, int iterations, int max_iterations);
     uint32_t hsv_to_bgr(float h, float s, float v);
 };
 
