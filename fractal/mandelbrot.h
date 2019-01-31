@@ -1,6 +1,6 @@
 #pragma once
 
-#include "settings.h"
+#include "palette.h"
 #include "thread_pool.h"
 #include <cstdint>
 #include <queue>
@@ -16,8 +16,8 @@ struct Mandelbrot {
     uint32_t const* generate(double x, double y, double zoom);  ///< pointer may be invalidated after any interaction with this object
 
 private:
+    Palette palette_;
     std::vector<uint32_t> pixels_;
-    std::vector<uint32_t> palette_;
     int width_;
     int height_;
     std::unique_ptr<ThreadPool> thread_pool_ =

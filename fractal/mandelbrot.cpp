@@ -104,28 +104,7 @@ uint32_t Mandelbrot::color(double x, double y, int iterations, int max_iteration
 
     double log_log_sqrt_zn = std::log(std::log(x * x + y * y)) - log_2;  // log(log(sqrt(x))) == log(log(x)) - log(2)
     double c = iterations - 1.28 + (log_log_bailout - log_log_sqrt_zn) * log_2_inv;
-    double index = std::fmod((std::log(c / 64 + 1) * log_2_inv + 0.45), 1.) * palette.size();
-    int index_int = static_cast<int>(index);
-
-    // interpolate a and b
-    uint32_t a = palette[index_int % palette.size()];
-    uint32_t b = palette[(index_int + 1) % palette.size()];
-
-    double b_k = index - index_int;
-    double a_k = 1 - b_k;
-
-    double a_r = ((a & 0x00ff0000) >> 16) * a_k;
-    double a_g = ((a & 0x0000ff00) >> 8) * a_k;
-    double a_b = (a & 0xff) * a_k;
-
-    double b_r = ((b & 0x00ff0000) >> 16) * b_k;
-    double b_g = ((b & 0x0000ff00) >> 8) * b_k;
-    double b_b = (b & 0xff) * b_k;
-
-    return 0xff000000
-           | static_cast<int>(a_r + b_r) << 16
-           | static_cast<int>(a_g + b_g) << 8
-           | static_cast<int>(a_b + b_b);
+    return palette_.get(std::log(c / 64 + 1) * log_2_inv - .1);
 }
 
 }  // namespace fractal

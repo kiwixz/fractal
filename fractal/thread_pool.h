@@ -9,8 +9,7 @@
 
 namespace fractal {
 
-class ThreadPool {
-public:
+struct ThreadPool {
     ThreadPool() = default;
     ThreadPool(size_t nr_threads);
     ~ThreadPool();
