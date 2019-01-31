@@ -97,9 +97,14 @@ uint32_t Mandelbrot::color(double x, double y, int iterations, int max_iteration
     if (iterations == max_iterations)
         return 0xff000000;
 
-    double log_log_sqrt_zn = std::log(std::log(x * x + y * y)) - std::log(2.);  // log(log(sqrt(x))) == log(log(x)) - log(2)
-    double c = iterations - 1.28 + (std::log(std::log(bailout)) - log_log_sqrt_zn) / std::log(2.);
-    double index = std::fmod((std::log(c / 64 + 1) / std::log(2.) + 0.45), 1.) * palette.size();
+    // precompute constants, constexpr would have been nice
+    static const double log_log_bailout = std::log(std::log(bailout));
+    static const double log_2 = std::log(2.);
+    static const double log_2_inv = 1 / log_2;
+
+    double log_log_sqrt_zn = std::log(std::log(x * x + y * y)) - log_2;  // log(log(sqrt(x))) == log(log(x)) - log(2)
+    double c = iterations - 1.28 + (log_log_bailout - log_log_sqrt_zn) * log_2_inv;
+    double index = std::fmod((std::log(c / 64 + 1) * log_2_inv + 0.45), 1.) * palette.size();
     int index_int = static_cast<int>(index);
 
     // interpolate a and b
