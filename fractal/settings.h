@@ -3,9 +3,9 @@
 namespace fractal::settings {
 
 struct Settings {
-    float x;
-    float y;
-    float zoom;
+    double x;
+    double y;
+    double zoom;
 };
 
 bool parse(int argc, char** argv);  ///< Returns true if should exit.

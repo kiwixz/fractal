@@ -68,7 +68,7 @@ void MainWindow::loop()
     while (!glfwWindowShouldClose(window_)) {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        const uint32_t* pixels = mandelbrot_.generate(settings::get().x,
+        uint32_t const* pixels = mandelbrot_.generate(settings::get().x,
                                                       settings::get().y,
                                                       settings::get().zoom);
         stream_.update(pixels, GL_BGRA);

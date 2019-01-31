@@ -24,32 +24,32 @@ void Mandelbrot::resize(int width, int height)
     pixels_.resize(width * height);
 }
 
-uint32_t const* Mandelbrot::generate(float x, float y, float zoom)
+uint32_t const* Mandelbrot::generate(double x, double y, double zoom)
 {
     using Clock = std::chrono::high_resolution_clock;
     Clock::time_point start = Clock::now();
 
-    float y_size = 1 / zoom;
-    float x_size = y_size * width_ / height_;
-    float x_min = x - x_size / 2;
-    float y_min = y - y_size / 2;
-    float dx = x_size / width_;
-    float dy = y_size / height_;
+    double y_size = 1 / zoom;
+    double x_size = y_size * width_ / height_;
+    double x_min = x - x_size / 2;
+    double y_min = y - y_size / 2;
+    double dx = x_size / width_;
+    double dy = y_size / height_;
 
     int max_iterations = static_cast<int>(512 * std::sqrt(zoom));
     auto add_work = [&](int from_y, int to_y) {
         futures_.push(thread_pool_->submit([=] {
             for (int pixel_y = from_y; pixel_y < to_y; ++pixel_y) {
                 for (int pixel_x = 0; pixel_x < width_; ++pixel_x) {
-                    float real_x = x_min + dx * pixel_x;
-                    float real_y = y_min + dy * pixel_y;
-                    float x = 0;
-                    float y = 0;
+                    double real_x = x_min + dx * pixel_x;
+                    double real_y = y_min + dy * pixel_y;
+                    double x = 0;
+                    double y = 0;
 
                     int iterations = 0;
                     while (iterations < max_iterations && x * x + y * y <= bailout) {
-                        float x_tmp = x * x - y * y + real_x;
-                        float y_tmp = 2 * x * y + real_y;
+                        double x_tmp = x * x - y * y + real_x;
+                        double y_tmp = 2 * x * y + real_y;
                         if (x_tmp == x && y_tmp == y) {
                             iterations = max_iterations;
                             break;
@@ -92,30 +92,30 @@ uint32_t const* Mandelbrot::generate(float x, float y, float zoom)
     return pixels_.data();
 }
 
-uint32_t Mandelbrot::color(float x, float y, int iterations, int max_iterations)
+uint32_t Mandelbrot::color(double x, double y, int iterations, int max_iterations)
 {
     if (iterations == max_iterations)
         return 0xff000000;
 
-    float log_log_sqrt_zn = std::log(std::log(x * x + y * y)) - std::log(2.f);  // log(log(sqrt(x))) == log(log(x)) - log(2)
-    float c = iterations - 1.28f + (std::log(std::log(bailout)) - log_log_sqrt_zn) / std::log(2.f);
-    float index = std::fmod((std::log(c / 64 + 1) / std::log(2.f) + 0.45f), 1.) * palette.size();
+    double log_log_sqrt_zn = std::log(std::log(x * x + y * y)) - std::log(2.);  // log(log(sqrt(x))) == log(log(x)) - log(2)
+    double c = iterations - 1.28 + (std::log(std::log(bailout)) - log_log_sqrt_zn) / std::log(2.);
+    double index = std::fmod((std::log(c / 64 + 1) / std::log(2.) + 0.45), 1.) * palette.size();
     int index_int = static_cast<int>(index);
 
     // interpolate a and b
     uint32_t a = palette[index_int % palette.size()];
     uint32_t b = palette[(index_int + 1) % palette.size()];
 
-    float b_k = index - index_int;
-    float a_k = 1 - b_k;
+    double b_k = index - index_int;
+    double a_k = 1 - b_k;
 
-    float a_r = ((a & 0x00ff0000) >> 16) * a_k;
-    float a_g = ((a & 0x0000ff00) >> 8) * a_k;
-    float a_b = (a & 0xff) * a_k;
+    double a_r = ((a & 0x00ff0000) >> 16) * a_k;
+    double a_g = ((a & 0x0000ff00) >> 8) * a_k;
+    double a_b = (a & 0xff) * a_k;
 
-    float b_r = ((b & 0x00ff0000) >> 16) * b_k;
-    float b_g = ((b & 0x0000ff00) >> 8) * b_k;
-    float b_b = (b & 0xff) * b_k;
+    double b_r = ((b & 0x00ff0000) >> 16) * b_k;
+    double b_g = ((b & 0x0000ff00) >> 8) * b_k;
+    double b_b = (b & 0xff) * b_k;
 
     return 0xff000000
            | static_cast<int>(a_r + b_r) << 16
