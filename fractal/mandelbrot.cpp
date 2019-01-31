@@ -36,7 +36,7 @@ uint32_t const* Mandelbrot::generate(double x, double y, double zoom)
     double dx = x_size / width_;
     double dy = y_size / height_;
 
-    int max_iterations = static_cast<int>(512 * std::sqrt(zoom));
+    int max_iterations = static_cast<int>(512 * std::pow(zoom, 0.1));
     auto add_work = [&](int from_y, int to_y) {
         futures_.push(thread_pool_->submit([=] {
             for (int pixel_y = from_y; pixel_y < to_y; ++pixel_y) {
