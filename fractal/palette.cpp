@@ -23,7 +23,7 @@ Palette::Palette()
     generated_.reserve(palette_size);
     for (int i = 0; i < palette_size; ++i) {
         double t = i / static_cast<double>(palette_size);
-        double index_f = std::sqrt(t) * (colors.size() - 1);
+        double index_f = t * (colors.size() - 1);
         int index = static_cast<int>(index_f);
 
         Color const& a = colors[index];
