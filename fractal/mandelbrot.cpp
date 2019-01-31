@@ -99,7 +99,7 @@ uint32_t Mandelbrot::color(float x, float y, int iterations, int max_iterations)
 
     float log_log_sqrt_zn = std::log(std::log(x * x + y * y)) - std::log(2.f);  // log(log(sqrt(x))) == log(log(x)) - log(2)
     float c = iterations - 1.28f + (std::log(std::log(bailout)) - log_log_sqrt_zn) / std::log(2.f);
-    float index = std::fmod((std::log(c / 64 + 1) / std::log(2.f) + 0.45f), 1) * palette.size();
+    float index = std::fmod((std::log(c / 64 + 1) / std::log(2.f) + 0.45f), 1.) * palette.size();
     int index_int = static_cast<int>(index);
 
     // interpolate a and b
@@ -121,59 +121,6 @@ uint32_t Mandelbrot::color(float x, float y, int iterations, int max_iterations)
            | static_cast<int>(a_r + b_r) << 16
            | static_cast<int>(a_g + b_g) << 8
            | static_cast<int>(a_b + b_b);
-}
-
-uint32_t Mandelbrot::hsv_to_bgr(float h, float s, float v)
-{
-    float r = 0;
-    float g = 0;
-    float b = 0;
-
-    h = std::fmod(h, 360.f) / 60;
-    int i = static_cast<int>(h);
-    float f = h - i;
-    float p = v * (1 - s);
-    float q = v * (1 - s * f);
-    float t = v * (1 - s * (1 - f));
-
-    switch (i) {
-    case 0:
-        r = v;
-        g = t;
-        b = p;
-        break;
-    case 1:
-        r = q;
-        g = v;
-        b = p;
-        break;
-    case 2:
-        r = p;
-        g = v;
-        b = t;
-        break;
-    case 3:
-        r = p;
-        g = q;
-        b = v;
-        break;
-    case 4:
-        r = t;
-        g = p;
-        b = v;
-        break;
-    case 5:
-        r = v;
-        g = p;
-        b = q;
-        break;
-    default:
-        break;
-    }
-
-    return static_cast<int>(r * 255) << 16
-           | static_cast<int>(g * 255) << 8
-           | static_cast<int>(b * 255);
 }
 
 }  // namespace fractal
