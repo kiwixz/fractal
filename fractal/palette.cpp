@@ -1,5 +1,6 @@
 #include "palette.h"
 #include <array>
+#include <cmath>
 
 namespace fractal {
 
