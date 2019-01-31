@@ -32,9 +32,9 @@ Palette::Palette()
         double b_k = index_f - index;
         double a_k = 1 - b_k;
 
-        generated_.push_back({static_cast<uint8_t>(a.r * a_k + b.r * b_k + .5),
-                              static_cast<uint8_t>(a.g * a_k + b.g * b_k + .5),
-                              static_cast<uint8_t>(a.b * a_k + b.b * b_k + .5)});
+        generated_.push_back({static_cast<uint8_t>(std::lround(a.r * a_k + b.r * b_k)),
+                              static_cast<uint8_t>(std::lround(a.g * a_k + b.g * b_k)),
+                              static_cast<uint8_t>(std::lround(a.b * a_k + b.b * b_k))});
     }
 }
 
@@ -50,9 +50,9 @@ uint32_t Palette::get(double t)
     double a_k = 1 - b_k;
 
     return 0xff000000
-           | static_cast<int>(a.r * a_k + b.r * b_k + .5) << 16
-           | static_cast<int>(a.g * a_k + b.g * b_k + .5) << 8
-           | static_cast<int>(a.b * a_k + b.b * b_k + .5);
+           | static_cast<int>(std::lround(a.r * a_k + b.r * b_k)) << 16
+           | static_cast<int>(std::lround(a.g * a_k + b.g * b_k)) << 8
+           | static_cast<int>(std::lround(a.b * a_k + b.b * b_k));
 }
 
 }  // namespace fractal
