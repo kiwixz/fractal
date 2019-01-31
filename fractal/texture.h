@@ -6,8 +6,8 @@
 
 namespace fractal {
 
-struct TextureStream {
-    TextureStream(int width, int height, GLenum format = GL_RGB8);
+struct Texture {
+    Texture(int width, int height, GLenum format = GL_RGB8);
 
     [[nodiscard]] ScopeExit bind();
 
@@ -24,7 +24,7 @@ private:
 
 
 template <typename T>
-void TextureStream::update(T const* pixels, GLenum format, GLenum type, int x_offset, int y_offset, int width, int height)
+void Texture::update(T const* pixels, GLenum format, GLenum type, int x_offset, int y_offset, int width, int height)
 {
     glTextureSubImage2D(texture_, 0,
                         x_offset, y_offset,

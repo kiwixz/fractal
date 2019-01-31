@@ -25,7 +25,7 @@ MainWindow::Glfw::Glfw()
 
 MainWindow::MainWindow() :
     window_{base_width, base_height, "fractal"},
-    stream_{base_width, base_height},
+    texture_{base_width, base_height},
     mandelbrot_{base_width, base_height}
 {
     glfwSetWindowUserPointer(window_, this);
@@ -64,7 +64,7 @@ void MainWindow::loop()
 {
     ScopeExit shader_binding = program_.bind();
     ScopeExit quad_binding = quad_.bind();
-    ScopeExit stream_binding = stream_.bind();
+    ScopeExit texture_binding = texture_.bind();
 
     while (!glfwWindowShouldClose(window_)) {
         glClear(GL_COLOR_BUFFER_BIT);
@@ -72,14 +72,14 @@ void MainWindow::loop()
         uint32_t const* pixels = mandelbrot_.generate(settings::get().x,
                                                       settings::get().y,
                                                       settings::get().zoom);
-        stream_.update(pixels, GL_BGRA);
+        texture_.update(pixels, GL_BGRA);
         quad_.draw();
 
         glfwSwapBuffers(window_);
         glfwPollEvents();
 
-        stream_binding.cancel();
-        stream_binding = stream_.bind();  // stream may have been resized
+        texture_binding.cancel();
+        texture_binding = texture_.bind();  // stream may have been resized
     }
 }
 
@@ -96,7 +96,7 @@ void MainWindow::on_key(int key, int /*scancode*/, int action, int mods)
 void MainWindow::on_resize(int width, int height)
 {
     glViewport(0, 0, width, height);
-    stream_ = {width, height};
+    texture_ = {width, height};
     mandelbrot_.resize(width, height);
 }
 

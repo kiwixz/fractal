@@ -5,7 +5,7 @@
 #include "glfw_window.h"
 #include "mandelbrot.h"
 #include "shader.h"
-#include "texture_stream.h"
+#include "texture.h"
 #include <glad/glfw.h>
 
 namespace fractal {
@@ -27,7 +27,7 @@ private:
     GlfwWindow window_;
     ShaderProgram program_;
     FullQuad quad_;
-    TextureStream stream_;
+    Texture texture_;
     Mandelbrot mandelbrot_;
 
     void on_key(int key, int scancode, int action, int mods);
