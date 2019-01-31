@@ -1,14 +1,20 @@
 #include "mandelbrot.h"
+#include "palette.h"
 #include <spdlog/spdlog.h>
 #include <chrono>
 #include <cmath>
 
 namespace fractal {
+namespace {
 
-Mandelbrot::Mandelbrot(int width, int height, int max_iterations)
+constexpr int bailout = 128;
+
+}  // namespace
+
+
+Mandelbrot::Mandelbrot(int width, int height)
 {
     resize(width, height);
-    set_max_iterations(max_iterations);
 }
 
 void Mandelbrot::resize(int width, int height)
@@ -16,48 +22,6 @@ void Mandelbrot::resize(int width, int height)
     width_ = width;
     height_ = height;
     pixels_.resize(width * height);
-}
-
-void Mandelbrot::set_max_iterations(int max_iterations)
-{
-    max_iterations_ = max_iterations;
-    int palette_size = max_iterations + 1;
-    palette_.resize(palette_size);
-
-    struct Color {
-        float p, h, s, v;
-    };
-    constexpr std::array colors = {Color{0.f, 240.f, 1.f, .5f},
-                                   Color{.1f, 200.f, .5f, 1.f},
-                                   Color{.2f, 200.f, 0.f, 1.f},
-                                   Color{.2f, 33.f, 0.f, 1.f},
-                                   Color{.3f, 33.f, 1.f, 1.f},
-                                   Color{.4f, 33.f, 1.f, 0.f},
-                                   Color{.4f, 240.f, 1.f, 0.f},
-                                   Color{.5f, 240.f, 1.f, .5f},
-                                   Color{.6f, 200.f, .5f, 1.f},
-                                   Color{.7f, 200.f, 0.f, 1.f},
-                                   Color{.7f, 33.f, 0.f, 1.f},
-                                   Color{.8f, 33.f, 1.f, 1.f},
-                                   Color{.9f, 16.f, 1.f, 1.f},
-                                   Color{1.f, 33.f, 1.f, 0.f}};
-
-    for (int i = 0; i < palette_size; ++i) {
-        float p = static_cast<float>(i) / palette_size;
-
-        auto it = std::find_if(colors.begin(), colors.end(), [&](Color const& color) {
-            return color.p > p;
-        });
-        Color const& b = *it;
-        Color const& a = *--it;
-
-        float b_k = (p - a.p) / (b.p - a.p);
-        float a_k = 1 - b_k;
-
-        palette_[i] = hsv_to_bgr(a.h * a_k + b.h * b_k,
-                                 a.s * a_k + b.s * b_k,
-                                 a.v * a_k + b.v * b_k);
-    }
 }
 
 uint32_t const* Mandelbrot::generate(float x, float y, float zoom)
@@ -72,6 +36,7 @@ uint32_t const* Mandelbrot::generate(float x, float y, float zoom)
     float dx = x_size / width_;
     float dy = y_size / height_;
 
+    int max_iterations = static_cast<int>(512 * std::sqrt(zoom));
     auto add_work = [&](int from_y, int to_y) {
         futures_.push(thread_pool_->submit([=] {
             for (int pixel_y = from_y; pixel_y < to_y; ++pixel_y) {
@@ -82,11 +47,11 @@ uint32_t const* Mandelbrot::generate(float x, float y, float zoom)
                     float y = 0;
 
                     int iterations = 0;
-                    while (iterations < max_iterations_ && x * x + y * y <= 2 * 2) {
+                    while (iterations < max_iterations && x * x + y * y <= bailout) {
                         float x_tmp = x * x - y * y + real_x;
                         float y_tmp = 2 * x * y + real_y;
                         if (x_tmp == x && y_tmp == y) {
-                            iterations = max_iterations_;
+                            iterations = max_iterations;
                             break;
                         }
 
@@ -94,7 +59,7 @@ uint32_t const* Mandelbrot::generate(float x, float y, float zoom)
                         y = y_tmp;
                         ++iterations;
                     }
-                    pixels_[pixel_y * width_ + pixel_x] = color(x, y, iterations, max_iterations_);
+                    pixels_[pixel_y * width_ + pixel_x] = color(x, y, iterations, max_iterations);
                 }
             }
         }));
@@ -132,17 +97,16 @@ uint32_t Mandelbrot::color(float x, float y, int iterations, int max_iterations)
     if (iterations == max_iterations)
         return 0xff000000;
 
-    float log_zn = std::log(x * x + y * y) / 2;
-    float nu = std::log(log_zn / std::log(2.f)) / std::log(2.f);
-
-    float smooth_iterations = iterations + 1 - nu;
-    int smooth_iterations_int = static_cast<int>(smooth_iterations);
+    float log_log_sqrt_zn = std::log(std::log(x * x + y * y)) - std::log(2.f);  // log(log(sqrt(x))) == log(log(x)) - log(2)
+    float c = iterations - 1.28f + (std::log(std::log(bailout)) - log_log_sqrt_zn) / std::log(2.f);
+    float index = std::fmod((std::log(c / 64 + 1) / std::log(2.f) + 0.45f), 1) * palette.size();
+    int index_int = static_cast<int>(index);
 
     // interpolate a and b
-    uint32_t a = palette_[smooth_iterations_int % palette_.size()];
-    uint32_t b = palette_[(smooth_iterations_int + 1) % palette_.size()];
+    uint32_t a = palette[index_int % palette.size()];
+    uint32_t b = palette[(index_int + 1) % palette.size()];
 
-    float b_k = smooth_iterations - smooth_iterations_int;
+    float b_k = index - index_int;
     float a_k = 1 - b_k;
 
     float a_r = ((a & 0x00ff0000) >> 16) * a_k;
