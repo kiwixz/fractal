@@ -22,6 +22,8 @@ bool parse(int argc, char** argv)
     // clang-format off
     options.add_options()
         ("h,help", "Show help")
+        ("W,width", "Render's width", cxxopts::value(settings.width)->default_value("999"))
+        ("H,height", "Render's height", cxxopts::value(settings.height)->default_value("888"))
         ("x", "Horizontal center of render", cxxopts::value(settings.x)->default_value("-0.75"))
         ("y", "Vertical center of render", cxxopts::value(settings.y)->default_value("0"))
         ("z,zoom", "Zoom (unit based on render's height)", cxxopts::value(settings.zoom)->default_value("0.42"))

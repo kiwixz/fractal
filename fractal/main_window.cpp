@@ -4,13 +4,6 @@
 #include <stdexcept>
 
 namespace fractal {
-namespace {
-
-constexpr int base_width = 999;
-constexpr int base_height = 888;
-
-}  // namespace
-
 
 MainWindow::Glfw::Glfw()
 {
@@ -24,9 +17,9 @@ MainWindow::Glfw::Glfw()
 
 
 MainWindow::MainWindow() :
-    window_{base_width, base_height, "fractal"},
-    texture_{base_width, base_height},
-    mandelbrot_{base_width, base_height}
+    window_{settings::get().width, settings::get().height, "fractal"},
+    texture_{settings::get().width, settings::get().height},
+    mandelbrot_{settings::get().width, settings::get().height}
 {
     glfwSetWindowUserPointer(window_, this);
     glfwSwapInterval(1);
@@ -79,7 +72,7 @@ void MainWindow::loop()
         glfwPollEvents();
 
         texture_binding.cancel();
-        texture_binding = texture_.bind();  // stream may have been resized
+        texture_binding = texture_.bind();  // texture may have been resized
     }
 }
 

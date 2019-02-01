@@ -3,6 +3,8 @@
 namespace fractal::settings {
 
 struct Settings {
+    int width;
+    int height;
     double x;
     double y;
     double zoom;
