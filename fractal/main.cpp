@@ -2,7 +2,7 @@
 #include "settings.h"
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
-#include <tinyfiledialogs.h>
+#include <tinyfiledialogs/tinyfiledialogs.h>
 #include <filesystem>
 #include <stdexcept>
 

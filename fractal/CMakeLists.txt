@@ -10,6 +10,7 @@ find_package("cxxopts" CONFIG REQUIRED)
 find_package("fmt" CONFIG REQUIRED)
 find_package("glfw3" CONFIG REQUIRED)
 find_package("spdlog" CONFIG REQUIRED)
+find_package("tinyfiledialogs" CONFIG REQUIRED)
 
 target_link_libraries("${target}"
     "glad"
@@ -18,7 +19,7 @@ target_link_libraries("${target}"
     "fmt::fmt"
     "glfw"
     "spdlog::spdlog"
-    "tinyfiledialogs"
+    "tinyfiledialogs::tinyfiledialogs"
 )
 
 
