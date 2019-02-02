@@ -11,7 +11,7 @@ RUN pacman --color=always --needed --noconfirm -Sy  \
     && mv "/opt/vcpkg" "./"  \
     && ln -s "/mnt/repo/vcpkg" "/opt/vcpkg"
 
-COPY "install_libs.py" "/mnt/repo/"
+COPY "install_libs.py" "vcpkg_config" "/mnt/repo/"
 RUN bash -l -c 'python3 "install_libs.py"'  \
     \
     && git -C "vcpkg" gc --aggressive --prune=all  \
