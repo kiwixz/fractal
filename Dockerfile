@@ -3,10 +3,10 @@ FROM kiwixz/arch-vcpkg:2019-01-20
 WORKDIR "/mnt/repo"
 
 RUN pacman --color=always --needed --noconfirm -Sy  \
-        python3  \
-        cmake gcc ninja  \
+        cmake gcc ninja python3  \
         clang diffutils  \
-        libxcursor libxinerama libxrandr sed  \
+        libxcursor libxinerama libxrandr  `# glfw`  \
+        python-setuptools sed  `# glad`  \
     \
     && mv "/opt/vcpkg" "./"  \
     && ln -s "/mnt/repo/vcpkg" "/opt/vcpkg"
