@@ -5,6 +5,7 @@ import os
 import platform
 import shutil
 import subprocess
+from distutils import dir_util
 from pathlib import Path
 
 
@@ -39,6 +40,7 @@ def install_vcpkg():
 
 def install_vcpkg_packages():
     logging.info("installing vcpkg libs")
+    dir_util.copy_tree("vcpkg_config", "vcpkg")
     triplet = "x64-windows" if is_win() else "x64-linux"
     vcpkg_exe = str(Path("vcpkg") / "vcpkg")
     subprocess.check_call([vcpkg_exe, "install", "--triplet", triplet] + VCPKG_LIBS)
