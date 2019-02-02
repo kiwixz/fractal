@@ -6,7 +6,6 @@
 #include "mandelbrot.h"
 #include "shader.h"
 #include "texture.h"
-#include <glad/glfw.h>
 
 namespace fractal {
 

@@ -1,4 +1,5 @@
 #include "main_window.h"
+#include "glad_glfw.h"
 #include "settings.h"
 #include <spdlog/spdlog.h>
 #include <stdexcept>

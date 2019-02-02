@@ -1,5 +1,5 @@
 #include "glfw_handle.h"
-#include <glad/glfw.h>
+#include "glad_glfw.h"
 #include <stdexcept>
 
 namespace fractal {

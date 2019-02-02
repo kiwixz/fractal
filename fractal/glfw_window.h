@@ -1,7 +1,7 @@
 #pragma once
 
+#include "glad_glfw.h"
 #include "glfw_handle.h"
-#include <glad/glfw.h>
 #include <memory>
 #include <string_view>
 
