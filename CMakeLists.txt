@@ -1,5 +1,10 @@
-cmake_minimum_required(VERSION 3.8)
-project(fractal)
+cmake_minimum_required(VERSION "3.8")
+
+if (NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+endif ()
+
+project("fractal" CXX)
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
