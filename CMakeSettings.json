@@ -9,11 +9,7 @@
       "variables": [
         {
           "name": "CMAKE_CXX_FLAGS",
-          "value": "/I ${projectDir}/vcpkg/installed/x64-windows/include"
-        },
-        {
-          "name": "CMAKE_EXE_LINKER_FLAGS",
-          "value": "/LIBPATH:${projectDir}/vcpkg/installed/x64-windows/debug/lib"
+          "value": ""
         }
       ]
     },
@@ -26,11 +22,7 @@
       "variables": [
         {
           "name": "CMAKE_CXX_FLAGS",
-          "value": "/I ${projectDir}/vcpkg/installed/x64-windows/include"
-        },
-        {
-          "name": "CMAKE_EXE_LINKER_FLAGS",
-          "value": "/LIBPATH:${projectDir}/vcpkg/installed/x64-windows/lib"
+          "value": ""
         }
       ]
     }
