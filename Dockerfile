@@ -3,7 +3,7 @@ FROM kiwixz/arch-vcpkg:2019-01-20
 WORKDIR "/mnt/repo"
 
 RUN pacman --color=always --needed --noconfirm -Sy  \
-        cmake gcc ninja python3  \
+        clang cmake lld ninja python3  \
         clang diffutils  \
         libxcursor libxinerama libxrandr  `# glfw`  \
         sed  `# glad`  \
