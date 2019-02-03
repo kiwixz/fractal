@@ -69,10 +69,7 @@ script:
             done < <(git ls-files | grep -E "\.(cpp|h)$")
 
             echo -e "\n\e[1;97;44m > Checking with clang-tidy... \e[0m"
-            mkdir -p "build/clang-tidy"
-            cd "build/clang-tidy"
-            cmake -G Ninja "../.."
-            ninja
+            cd "build/release"
             SRC="$(git ls-files '../..' | grep -E '\.cpp$')"
             clang-tidy -quiet -p "compile_commands.json" -warnings-as-errors "*" $SRC
             ((err += $?))
