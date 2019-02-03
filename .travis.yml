@@ -69,7 +69,6 @@ script:
             done < <(git ls-files | grep -E "\.(cpp|h)$")
 
             echo -e "\n\e[1;97;44m > Checking with clang-tidy... \e[0m"
-            CXXFLAGS+="-w"
             mkdir -p "build/clang-tidy"
             cd "build/clang-tidy"
             cmake -G Ninja "../.."
