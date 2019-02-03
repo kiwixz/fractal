@@ -26,7 +26,8 @@ bool parse(int argc, char** argv)
         ("H,height", "Render's height", cxxopts::value(settings.height)->default_value("888"))
         ("x", "Horizontal center of render", cxxopts::value(settings.x)->default_value("-0.75"))
         ("y", "Vertical center of render", cxxopts::value(settings.y)->default_value("0"))
-        ("z,zoom", "Zoom (unit based on render's height)", cxxopts::value(settings.zoom)->default_value("0.42"))
+        ("z,zoom", "Initial zoom (unit based on render's height)", cxxopts::value(settings.initial_zoom)->default_value("0.42"))
+        ("s,speed", "Speed of zooming", cxxopts::value(settings.zoom_speed)->default_value("0"))
         ;
     // clang-format on
 

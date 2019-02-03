@@ -7,7 +7,8 @@ struct Settings {
     int height;
     double x;
     double y;
-    double zoom;
+    double initial_zoom;
+    double zoom_speed;
 };
 
 bool parse(int argc, char** argv);  ///< Returns true if should exit.

@@ -28,6 +28,7 @@ private:
     FullQuad quad_;
     Texture texture_;
     Mandelbrot mandelbrot_;
+    double zoom_;
 
     void on_key(int key, int scancode, int action, int mods);
     void on_resize(int width, int height);

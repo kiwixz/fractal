@@ -20,7 +20,8 @@ MainWindow::Glfw::Glfw()
 MainWindow::MainWindow() :
     window_{settings::get().width, settings::get().height, "fractal"},
     texture_{settings::get().width, settings::get().height},
-    mandelbrot_{settings::get().width, settings::get().height}
+    mandelbrot_{settings::get().width, settings::get().height},
+    zoom_{settings::get().initial_zoom}
 {
     glfwSetWindowUserPointer(window_, this);
     glfwSwapInterval(1);
@@ -60,17 +61,27 @@ void MainWindow::loop()
     ScopeExit quad_binding = quad_.bind();
     ScopeExit texture_binding = texture_.bind();
 
+    using Clock = std::chrono::high_resolution_clock;
+    Clock::time_point last_frame = Clock::now();
+
     while (!glfwWindowShouldClose(window_)) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         uint32_t const* pixels = mandelbrot_.generate(settings::get().x,
                                                       settings::get().y,
-                                                      settings::get().zoom);
+                                                      zoom_);
         texture_.update(pixels, GL_BGRA);
         quad_.draw();
 
         glfwSwapBuffers(window_);
         glfwPollEvents();
+
+        Clock::time_point now = Clock::now();
+        double delta = std::chrono::duration<double>(now - last_frame).count();
+        last_frame = now;
+        spdlog::info("[main_window] frame time: {}ms", delta * std::milli::den);
+
+        zoom_ += zoom_ * settings::get().zoom_speed * delta;
 
         texture_binding.cancel();
         texture_binding = texture_.bind();  // texture may have been resized

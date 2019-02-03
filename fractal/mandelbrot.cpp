@@ -26,9 +26,6 @@ void Mandelbrot::resize(int width, int height)
 
 uint32_t const* Mandelbrot::generate(double x_center, double y_center, double zoom)
 {
-    using Clock = std::chrono::high_resolution_clock;
-    Clock::time_point start = Clock::now();
-
     double y_size = 1 / zoom;
     double x_size = y_size * width_ / height_;
     double x_min = x_center - x_size / 2;
@@ -85,9 +82,6 @@ uint32_t const* Mandelbrot::generate(double x_center, double y_center, double zo
         futures_.front().get();
         futures_.pop();
     }
-
-    Clock::time_point end = Clock::now();
-    spdlog::info("[mandelbrot] generated in {}ms", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 
     return pixels_.data();
 }
