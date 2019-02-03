@@ -13,7 +13,7 @@ struct Mandelbrot {
     Mandelbrot(int width, int height);
 
     void resize(int width, int height);
-    uint32_t const* generate(double x, double y, double zoom);  ///< pointer may be invalidated after any interaction with this object
+    uint32_t const* generate(double x_center, double y_center, double zoom);  ///< pointer may be invalidated after any interaction with this object
 
 private:
     Palette palette_;

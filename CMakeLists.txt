@@ -6,7 +6,6 @@ set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.c
 
 project("fractal")
 
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
 set(CMAKE_CXX_STANDARD "17")
 set(CMAKE_CXX_STANDARD_REQUIRED "ON")
@@ -14,8 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED "ON")
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} -Weverything  \
-        -Wno-c++98-compat-pedantic -Wno-exit-time-destructors -Wno-float-equal -Wno-padded -Wno-sign-conversion  \
-        -Wno-shadow-uncaptured-local"
+        -Wno-c++98-compat-pedantic -Wno-exit-time-destructors -Wno-float-equal -Wno-padded -Wno-sign-conversion"
     )
     set(CMAKE_CXX_FLAGS_DEBUG "-O1 -g -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined")
     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -flto -ffast-math -DNDEBUG")
