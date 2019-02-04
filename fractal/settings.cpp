@@ -27,7 +27,12 @@ bool parse(int argc, char** argv)
         ("x", "Horizontal center of render", cxxopts::value(settings.x)->default_value("-0.75"))
         ("y", "Vertical center of render", cxxopts::value(settings.y)->default_value("0"))
         ("z,zoom", "Initial zoom (unit based on render's height)", cxxopts::value(settings.initial_zoom)->default_value("0.42"))
-        ("s,speed", "Speed of zooming", cxxopts::value(settings.zoom_speed)->default_value("0"))
+        ("s,speed", "Zoom per second", cxxopts::value(settings.zoom_speed))
+        ;
+    options.add_options("file output")
+        ("o,out", "File to output render instead of displaying it", cxxopts::value(settings.output_file))
+        ("fps", "Frames per second", cxxopts::value(settings.fps)->default_value("0"))
+        ("d,duration", "Duration in seconds", cxxopts::value(settings.duration)->default_value("10"))
         ;
     // clang-format on
 
