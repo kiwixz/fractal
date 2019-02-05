@@ -15,6 +15,7 @@ VCPKG_LIBS = [
     "fmt",
     "glad",
     "glfw3",
+    "libvpx",
     "spdlog",
     "tinyfiledialogs",
 ]
