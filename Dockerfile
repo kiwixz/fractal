@@ -5,8 +5,9 @@ WORKDIR "/mnt/repo"
 RUN pacman --color=always --needed --noconfirm -Sy  \
         clang cmake lld ninja python3  \
         clang diffutils  \
-        libxcursor libxinerama libxrandr  `# glfw`  \
         sed  `# glad`  \
+        libxcursor libxinerama libxrandr  `# glfw`  \
+        yasm  `# libvpx`  \
     \
     && mv "/opt/vcpkg" "./"  \
     && ln -s "/mnt/repo/vcpkg" "/opt/vcpkg"
