@@ -7,7 +7,6 @@ RUN pacman --color=always --needed --noconfirm -Sy  \
         clang diffutils  \
         sed  `# glad`  \
         libxcursor libxinerama libxrandr  `# glfw`  \
-        yasm  `# libvpx`  \
     \
     && mv "/opt/vcpkg" "./"  \
     && ln -s "/mnt/repo/vcpkg" "/opt/vcpkg"
