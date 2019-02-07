@@ -17,6 +17,7 @@ VCPKG_LIBS = [
     "glfw3",
     "spdlog",
     "tinyfiledialogs",
+    "x265",
 ]
 
 
