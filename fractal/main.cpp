@@ -29,7 +29,7 @@ int main(int argc, char** argv)
         auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_file_path, true);
         auto logger = std::make_shared<spdlog::logger>("", spdlog::sinks_init_list{console_sink, file_sink});
         spdlog::set_default_logger(logger);
-#ifdef _DEBUG
+#ifdef DEBUG
         spdlog::set_level(spdlog::level::debug);
 #endif
         spdlog::set_pattern("%^[%H:%M:%S.%f][%t][%l]%$ %v");
