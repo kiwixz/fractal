@@ -2,21 +2,21 @@
 
 #include <string>
 
-namespace fractal::settings {
+namespace fractal {
 
 struct Settings {
+    Settings(int argc, char** argv);  ///< Also show help when appropriate.
+
+    bool help = false;
     int width;
     int height;
     double x;
     double y;
-    double initial_zoom;
+    double zoom;
     double zoom_speed = 0;
     std::string output_file;
     int fps;
     int duration;
 };
 
-bool parse(int argc, char** argv);  ///< Returns true if should exit.
-Settings const& get();
-
-}  // namespace fractal::settings
+}  // namespace fractal

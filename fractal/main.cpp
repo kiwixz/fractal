@@ -1,4 +1,6 @@
+#include "glad_glfw.h"
 #include "main_window.h"
+#include "render_video.h"
 #include "settings.h"
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
@@ -15,10 +17,14 @@ void main_impl(int argc, char** argv)
         spdlog::error("[glfw] error {}: {}", error, description);
     });
 
-    if (settings::parse(argc, argv))
+    Settings settings{argc, argv};
+    if (settings.help)
         return;
 
-    MainWindow{}.loop();
+    if (settings.output_file.empty())
+        show_main_window(settings);
+    else
+        render_video(settings);
 }
 
 int main(int argc, char** argv)

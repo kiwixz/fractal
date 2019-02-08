@@ -3,7 +3,7 @@
 
 namespace fractal {
 
-void render_video()
+void render_video(Settings const& settings)
 {}
 
 }  // namespace fractal

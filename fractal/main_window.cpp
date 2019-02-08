@@ -1,10 +1,47 @@
 #include "main_window.h"
+#include "full_quad.h"
 #include "glad_glfw.h"
+#include "glfw_handle.h"
+#include "glfw_window.h"
+#include "mandelbrot.h"
 #include "settings.h"
+#include "shader.h"
+#include "texture.h"
 #include <spdlog/spdlog.h>
 #include <stdexcept>
 
 namespace fractal {
+namespace {
+
+struct MainWindow {
+    MainWindow(Settings const& settings);
+
+    void loop();
+
+private:
+    struct Glfw {
+        Glfw();
+
+    private:
+        GlfwHandle handle_;
+    };
+
+    Glfw glfw_;
+    GlfwWindow window_;
+    ShaderProgram program_;
+    FullQuad quad_;
+    Texture texture_;
+    Mandelbrot mandelbrot_;
+
+    double x_;
+    double y_;
+    double zoom_;
+    double zoom_speed_;
+
+    void on_key(int key, int scancode, int action, int mods);
+    void on_resize(int width, int height);
+};
+
 
 MainWindow::Glfw::Glfw()
 {
@@ -17,11 +54,14 @@ MainWindow::Glfw::Glfw()
 }
 
 
-MainWindow::MainWindow() :
-    window_{settings::get().width, settings::get().height, "fractal"},
-    texture_{settings::get().width, settings::get().height},
-    mandelbrot_{settings::get().width, settings::get().height},
-    zoom_{settings::get().initial_zoom}
+MainWindow::MainWindow(Settings const& settings) :
+    window_{settings.width, settings.height, "fractal"},
+    texture_{settings.width, settings.height},
+    mandelbrot_{settings.width, settings.height},
+    x_{settings.x},
+    y_{settings.y},
+    zoom_{settings.zoom},
+    zoom_speed_{settings.zoom_speed}
 {
     glfwSetWindowUserPointer(window_, this);
     glfwSwapInterval(1);
@@ -67,9 +107,7 @@ void MainWindow::loop()
     while (!glfwWindowShouldClose(window_)) {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        uint32_t const* pixels = mandelbrot_.generate(settings::get().x,
-                                                      settings::get().y,
-                                                      zoom_);
+        uint32_t const* pixels = mandelbrot_.generate(x_, y_, zoom_);
         texture_.update(pixels, GL_BGRA);
         quad_.draw();
 
@@ -81,7 +119,7 @@ void MainWindow::loop()
         last_frame = now;
         spdlog::info("[main_window] frame time: {}ms", delta * std::milli::den);
 
-        zoom_ += zoom_ * settings::get().zoom_speed * delta;
+        zoom_ += zoom_ * zoom_speed_ * delta;
 
         texture_binding.cancel();
         texture_binding = texture_.bind();  // texture may have been resized
@@ -103,6 +141,14 @@ void MainWindow::on_resize(int width, int height)
     glViewport(0, 0, width, height);
     texture_ = {width, height};
     mandelbrot_.resize(width, height);
+}
+
+}  // namespace
+
+
+void show_main_window(Settings const& settings)
+{
+    MainWindow{settings}.loop();
 }
 
 }  // namespace fractal
