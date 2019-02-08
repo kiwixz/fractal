@@ -14,7 +14,7 @@ namespace fractal {
 namespace {
 
 struct MainWindow {
-    MainWindow(Settings const& settings);
+    explicit MainWindow(Settings const& settings);
 
     void loop();
 
