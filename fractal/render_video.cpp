@@ -1,5 +1,6 @@
 #include "render_video.h"
 #include "mandelbrot.h"
+#include <x265.h>
 
 namespace fractal {
 

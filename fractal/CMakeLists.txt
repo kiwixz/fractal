@@ -6,6 +6,8 @@ file(GLOB_RECURSE src "*.cpp")
 add_executable("${target}" "${src}")
 
 
+find_library(x265_LIB "x265-static")
+
 find_package("cxxopts" CONFIG REQUIRED)
 find_package("fmt" CONFIG REQUIRED)
 find_package("glad" CONFIG REQUIRED)
@@ -14,6 +16,8 @@ find_package("spdlog" CONFIG REQUIRED)
 find_package("tinyfiledialogs" CONFIG REQUIRED)
 
 target_link_libraries("${target}"
+    "${x265_LIB}"
+
     "cxxopts::cxxopts"
     "fmt::fmt"
     "glad::glad"
