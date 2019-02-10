@@ -6,7 +6,7 @@ file(GLOB_RECURSE src "*.cpp")
 add_executable("${target}" "${src}")
 
 
-find_library(x265_LIB "x265-static")
+find_library(x265_LIB NAMES "x265" "x265-static")
 
 find_package("cxxopts" CONFIG REQUIRED)
 find_package("fmt" CONFIG REQUIRED)
