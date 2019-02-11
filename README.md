@@ -7,6 +7,10 @@
 
 Tool to visualize [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set).
 
+It's able to zoom progressively at the coordinates of your choice.  You can either display it in a window, or export a video.
+
+`fractal -h` for more information.
+
 
 ## License
 
