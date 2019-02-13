@@ -35,7 +35,6 @@ script:
 
             export CXXFLAGS="-fdiagnostics-color=always -Werror"
             export LDFLAGS="-fdiagnostics-color=always -Werror -fuse-ld=lld"
-            export CLICOLOR_FORCE="1"
 
             echo -e "\n\e[1;97;44m > Building debug... \e[0m"
             mkdir -p "build/debug"
