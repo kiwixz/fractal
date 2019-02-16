@@ -1,11 +1,29 @@
 #!/usr/bin/env python3
 
-import difflib
 import logging
 import os
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+
+
+def check(path, check_id):
+    try:
+        subprocess.check_output(["clang-tidy", "-quiet", "-p", build_dir, "-warnings-as-errors", "*", path],
+                                stderr=subprocess.DEVNULL, text=True)
+    except subprocess.CalledProcessError as ex:
+        errors = ex.output
+
+    def result(nr_checks):
+        logging.info(f"[{check_id}/{nr_checks}] checked clang-tidy: {path}")
+        if not errors:
+            return True
+        logging.warning("errors found:")
+        print(errors, '\n')
+        return False
+
+    return result
 
 
 if __name__ == "__main__":
@@ -22,13 +40,18 @@ if __name__ == "__main__":
 
     exit_code = 0
     git_files = subprocess.check_output(["git", "ls-files"], text=True).splitlines()
-    for path in git_files:
-        if path.endswith(".cpp"):
-            logging.info(f"checking clang-format: {path}")
-            try:
-                subprocess.check_output(["clang-tidy", "-quiet", "-p", build_dir, "-warnings-as-errors", "*", path],
-                                        stderr=subprocess.DEVNULL, text=True)
-            except subprocess.CalledProcessError as ex:
-                logging.warning("errors found:")
-                print(ex.output)
-    exit(exit_code)
+    with ThreadPoolExecutor(os.cpu_count()) as executor:
+        results = []
+        count = 0
+        for path in git_files:
+            if path.endswith(".cpp"):
+                results.append(executor.submit(check, path, count + 1))
+                count += 1
+
+        nr_checks = count
+        count = 0
+        exit_code = 0
+        for future in results:
+            if not future.result()(nr_checks):
+                exit_code = 1
+        exit(exit_code)
