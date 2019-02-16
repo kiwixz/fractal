@@ -9,9 +9,10 @@ from pathlib import Path
 
 
 def check(path, check_id):
+    errors = None
     try:
         subprocess.check_output(["clang-tidy", "-quiet", "-p", build_dir, "-warnings-as-errors", "*", path],
-                                stderr=subprocess.DEVNULL, text=True)
+                                stderr=subprocess.STDOUT, text=True)
     except subprocess.CalledProcessError as ex:
         errors = ex.output
 
