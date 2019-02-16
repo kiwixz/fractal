@@ -7,8 +7,6 @@ set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.c
 project("fractal" CXX)
 
 option(BUILD_TESTS "Build tests" ON)
-option(CHECK_CLANG_FORMAT "Check source files with clang-format" ON)
-option(CHECK_CLANG_TIDY "Check source files with clang-tidy" ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
@@ -38,6 +36,9 @@ enable_testing()
 find_package ("Python3" COMPONENTS "Interpreter")
 add_test(NAME "check_clang_format"
     COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/check_clang_format.py"
+)
+add_test(NAME "check_clang_tidy"
+    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/check_clang_tidy.py"
 )
 
 
