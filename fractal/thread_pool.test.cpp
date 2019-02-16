@@ -20,8 +20,8 @@ TEST_CASE("thread_pool_submit")
 
     {
         bool pass = false;
-        pool.submit([](bool* pass) {
-                *pass = true;
+        pool.submit([](bool* b) {
+                *b = true;
             },
                     &pass)
                 .get();
