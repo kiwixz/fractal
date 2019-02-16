@@ -29,7 +29,7 @@ def is_win():
 
 def install_vcpkg():
     logging.info("installing vcpkg")
-    if os.path.exists(Path("vcpkg") / ".git"):
+    if (Path("vcpkg") / ".git").exists():
         logging.warning("vcpkg seems already installed, trying to update")
         if subprocess.check_output(["git", "-C", "vcpkg", "rev-parse", "HEAD"]).decode()[:-1] == VCPKG_COMMIT:
             logging.warning("vcpkg seems already up-to-date, skipping")
