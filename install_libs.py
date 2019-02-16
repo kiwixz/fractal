@@ -11,6 +11,7 @@ from pathlib import Path
 
 VCPKG_COMMIT = "61d163a8fcdfec87ae90efbb9b107c3b0372492c"
 VCPKG_LIBS = [
+    "doctest",
     "cxxopts",
     "fmt",
     "glad",
