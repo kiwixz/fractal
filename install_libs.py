@@ -5,6 +5,7 @@ import os
 import platform
 import shutil
 import subprocess
+import sys
 from distutils import dir_util
 from pathlib import Path
 
@@ -63,7 +64,8 @@ def cleanup_vcpkg():
 if __name__ == "__main__":
     logging.basicConfig(datefmt="%H:%M:%S",
                         format="[%(asctime)s][%(levelname)s] %(message)s",
-                        level=logging.DEBUG)
+                        level=logging.DEBUG,
+                        stream=sys.stderr)
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
     logging.info(f"detected platform: {platform.system()}")
