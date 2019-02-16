@@ -1,6 +1,6 @@
 #include "settings.h"
-#include "fmt/printf.h"
 #include <cxxopts.hpp>
+#include <fmt/printf.h>
 
 namespace fractal {
 
