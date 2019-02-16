@@ -6,6 +6,10 @@ set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.c
 
 project("fractal" CXX)
 
+option(BUILD_TESTS "Build tests" ON)
+option(CHECK_CLANG_FORMAT "Check source files with clang-format" ON)
+option(CHECK_CLANG_TIDY "Check source files with clang-tidy" ON)
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

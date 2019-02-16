@@ -9,6 +9,7 @@ add_executable("${target}" "${src}")
 find_library(x265_LIB NAMES "x265" "x265-static")
 
 find_package("cxxopts" CONFIG REQUIRED)
+find_package("doctest" CONFIG REQUIRED)
 find_package("fmt" CONFIG REQUIRED)
 find_package("glad" CONFIG REQUIRED)
 find_package("glfw3" CONFIG REQUIRED)
@@ -19,6 +20,7 @@ target_link_libraries("${target}"
     "${x265_LIB}"
 
     "cxxopts::cxxopts"
+    "doctest::doctest"
     "fmt::fmt"
     "glad::glad"
     "glfw"
