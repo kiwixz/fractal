@@ -37,7 +37,7 @@ readability-*  ,\
 "
 
 WarningsAsErrors: ""
-HeaderFilterRegex: ""
+HeaderFilterRegex: ".*"
 AnalyzeTemporaryDtors: false
 FormatStyle: file
 CheckOptions:

@@ -25,5 +25,10 @@ if __name__ == "__main__":
     for path in git_files:
         if path.endswith(".cpp"):
             logging.info(f"checking clang-format: {path}")
-            subprocess.check_call(["clang-tidy", "-p", build_dir, path])
+            try:
+                subprocess.check_output(["clang-tidy", "-quiet", "-p", build_dir, "-warnings-as-errors", "*", path],
+                                        stderr=subprocess.DEVNULL, text=True)
+            except subprocess.CalledProcessError as ex:
+                logging.warning("errors found:")
+                print(ex.output)
     exit(exit_code)
