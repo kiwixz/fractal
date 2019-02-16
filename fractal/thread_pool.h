@@ -11,7 +11,7 @@ namespace fractal {
 
 struct ThreadPool {
     ThreadPool() = default;
-    ThreadPool(size_t nr_threads);
+    explicit ThreadPool(size_t nr_threads);
     ~ThreadPool();
     ThreadPool(ThreadPool const&) = delete;
     ThreadPool& operator=(ThreadPool const&) = delete;
@@ -28,8 +28,8 @@ struct ThreadPool {
 private:
     /// Wrapper to make tasks copyable in case they are not.
     template <typename T>
-    struct Callable {
-        Callable(T&& callable);
+    struct SharedCallable {
+        SharedCallable(T&& callable);
 
         template <typename... Args>
         auto operator()(Args&&... args);
@@ -52,37 +52,11 @@ std::future<std::invoke_result_t<T, Args...>> ThreadPool::submit(T&& callable, A
 {
     using ReturnType = std::invoke_result_t<T, Args...>;
 
-
     std::shared_ptr<std::packaged_task<ReturnType()>> task;
-
-    if constexpr (sizeof...(Args) == 0) {
-        if constexpr (std::is_copy_constructible_v<T> && std::is_copy_assignable_v<T>)
-            task = std::make_shared<std::packaged_task<ReturnType()>>([callable = std::forward<T>(callable)]() mutable {
-                callable();
-            });
-        else
-            task = std::make_shared<std::packaged_task<ReturnType()>>([callable = Callable<T>{std::forward<T>(callable)}]() mutable {
-                callable();
-            });
-    }
-    else {
-        if constexpr (std::is_copy_constructible_v<T> && std::is_copy_assignable_v<T>)
-            task = std::make_shared<std::packaged_task<ReturnType()>>([callable = std::forward<T>(callable),
-                                                                       bound_args_tuple = std::make_tuple(std::forward<Args>(args)...)]() mutable {
-                std::apply([&](auto&&... bound_args) {
-                    return std::invoke(std::forward<T>(callable), std::forward<Args>(bound_args)...);
-                },
-                           std::move(bound_args_tuple));
-            });
-        else
-            task = std::make_shared<std::packaged_task<ReturnType()>>([callable = Callable<T>{std::forward<T>(callable)},
-                                                                       bound_args_tuple = std::make_tuple(std::forward<Args>(args)...)]() mutable {
-                std::apply([&](auto&&... bound_args) {
-                    return std::invoke(std::move(callable), std::forward<Args>(bound_args)...);
-                },
-                           std::move(bound_args_tuple));
-            });
-    }
+    if constexpr (std::is_copy_constructible_v<T>)  // std::function (and std::packaged_task) requires to be copy-constructible
+        task = std::make_shared<std::packaged_task<ReturnType()>>(std::bind(std::forward<T>(callable), std::forward<Args>(args)...));
+    else
+        task = std::make_shared<std::packaged_task<ReturnType()>>(std::bind(SharedCallable<T>{std::forward<T>(callable)}, std::forward<Args>(args)...));
 
     std::future<ReturnType> future = task->get_future();
 
@@ -101,13 +75,13 @@ std::future<std::invoke_result_t<T, Args...>> ThreadPool::submit(T&& callable, A
 
 
 template <typename T>
-ThreadPool::Callable<T>::Callable(T&& callable) :
-    callable_{std::make_unique<T>(std::forward<T>(callable))}
+ThreadPool::SharedCallable<T>::SharedCallable(T&& callable) :
+    callable_{std::make_shared<T>(std::forward<T>(callable))}
 {}
 
 template <typename T>
 template <typename... Args>
-auto ThreadPool::Callable<T>::operator()(Args&&... args)
+auto ThreadPool::SharedCallable<T>::operator()(Args&&... args)
 {
     return (*callable_)(std::forward<Args>(args)...);
 }
