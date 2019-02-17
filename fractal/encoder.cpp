@@ -13,7 +13,7 @@ Encoder::Encoder(Settings const& settings, OutputCallback output_callback) :
         x265_cleanup();
     }};
 
-    if (x265_param_default_preset(&param_, "1", nullptr)
+    if (x265_param_default_preset(&param_, "0", nullptr)
         || x265_param_parse(&param_, "colorprim", "bt709")
         || x265_param_parse(&param_, "transfer", "bt709")
         || x265_param_parse(&param_, "colormatrix", "bt709"))
