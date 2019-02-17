@@ -4,9 +4,9 @@ WORKDIR "/mnt/repo"
 
 RUN pacman --color=always --needed --noconfirm -Sy  \
         clang cmake lld ninja python3  \
-        clang diffutils  \
         sed  `# glad`  \
         libxcursor libxinerama libxrandr  `# glfw`  \
+        nasm  `# x265`  \
     \
     && mv "/opt/vcpkg" "./"  \
     && ln -s "/mnt/repo/vcpkg" "/opt/vcpkg"
