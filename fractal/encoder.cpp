@@ -1,5 +1,6 @@
 #include "encoder.h"
 #include "scope_exit.h"
+#include <algorithm>
 #include <stdexcept>
 
 namespace fractal {
@@ -57,9 +58,9 @@ void Encoder::set_yuv_from_rgb(uint32_t const* pixels)
         int r = pixels[i] >> 16 & 0xff;
         int g = pixels[i] >> 8 & 0xff;
         int b = pixels[i] & 0xff;
-        yuv_[i] = 0;
-        yuv_[i + nr_pixels_] = 0;
-        yuv_[i + nr_pixels_ * 2] = 0;
+        yuv_[i] = static_cast<uint8_t>(std::clamp(.2126 * r + .7152 * g + .0722 * b, 0., 255.));
+        yuv_[i + nr_pixels_] = static_cast<uint8_t>(std::clamp(-.09991 * r + -.33609 * g + .436 * b, 0., 255.));
+        yuv_[i + nr_pixels_ * 2] = static_cast<uint8_t>(std::clamp(.615 * r + -.55861 * g + -.05639 * b, 0., 255.));
     }
 }
 
