@@ -29,6 +29,8 @@ Encoder::Encoder(Settings const& settings, OutputCallback output_callback) :
     if (!encoder_)
         throw std::runtime_error{"could not open x265 encoder"};
 
+    forward_encoder_output(&x265_encoder_headers);
+
     yuv_.resize(nr_pixels_ * 3);
     x265_picture_init(&param_, &picture_);
     picture_.planes[0] = yuv_.data();
@@ -39,28 +41,14 @@ Encoder::Encoder(Settings const& settings, OutputCallback output_callback) :
 void Encoder::encode_rgb(uint32_t const* pixels)
 {
     set_yuv_from_rgb(pixels);
-
-    x265_nal* nals;
-    uint32_t nr_nals;
-    x265_encoder_encode(encoder_.get(), &nals, &nr_nals, &picture_, nullptr);
-    for (unsigned i = 0; i < nr_nals; ++i) {
-        x265_nal const& nal = nals[i];
-        output_callback_(reinterpret_cast<std::byte const*>(nal.payload), nal.sizeBytes);
-    }
+    forward_encoder_output(&x265_encoder_encode, &picture_, nullptr);
 }
 
 void Encoder::finish()
 {
-    bool finished = false;
-    while (!finished) {
-        x265_nal* nals;
-        uint32_t nr_nals;
-        finished = (x265_encoder_encode(encoder_.get(), &nals, &nr_nals, nullptr, nullptr) == 0);
-        for (unsigned i = 0; i < nr_nals; ++i) {
-            x265_nal const& nal = nals[i];
-            output_callback_(reinterpret_cast<std::byte const*>(nal.payload), nal.sizeBytes);
-        }
-    }
+    while (true)
+        if (forward_encoder_output(&x265_encoder_encode, &picture_, nullptr) == 0)
+            break;
 }
 
 void Encoder::set_yuv_from_rgb(uint32_t const* pixels)
