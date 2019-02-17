@@ -13,16 +13,12 @@ namespace {
 
 void main_impl(int argc, char** argv)
 {
-    glfwSetErrorCallback([](int error, char const* description) {
-        spdlog::error("[glfw] error {}: {}", error, description);
-    });
-
     Settings settings{argc, argv};
     if (settings.help)
         return;
 
     if (settings.output_file.empty())
-        show_main_window(settings);
+        MainWindow{settings}.loop();
     else
         render_video(settings);
 }

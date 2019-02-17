@@ -1,50 +1,15 @@
 #include "main_window.h"
-#include "full_quad.h"
-#include "glad_glfw.h"
-#include "glfw_handle.h"
-#include "glfw_window.h"
-#include "mandelbrot.h"
-#include "settings.h"
-#include "shader.h"
-#include "texture.h"
 #include <spdlog/spdlog.h>
 #include <stdexcept>
 
 namespace fractal {
-namespace {
-
-struct MainWindow {
-    explicit MainWindow(Settings const& settings);
-
-    void loop();
-
-private:
-    struct Glfw {
-        Glfw();
-
-    private:
-        GlfwHandle handle_;
-    };
-
-    Glfw glfw_;
-    GlfwWindow window_;
-    ShaderProgram program_;
-    FullQuad quad_;
-    Texture texture_;
-    Mandelbrot mandelbrot_;
-
-    double x_;
-    double y_;
-    double zoom_;
-    double zoom_speed_;
-
-    void on_key(int key, int scancode, int action, int mods);
-    void on_resize(int width, int height);
-};
-
 
 MainWindow::Glfw::Glfw()
 {
+    glfwSetErrorCallback([](int error, char const* description) {
+        spdlog::error("[glfw] error {}: {}", error, description);
+    });
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
@@ -141,14 +106,6 @@ void MainWindow::on_resize(int width, int height)
     glViewport(0, 0, width, height);
     texture_ = {width, height};
     mandelbrot_.resize(width, height);
-}
-
-}  // namespace
-
-
-void show_main_window(Settings const& settings)
-{
-    MainWindow{settings}.loop();
 }
 
 }  // namespace fractal
