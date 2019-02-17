@@ -10,7 +10,7 @@ add_library("${target}_base" "${src}")
 add_executable("${target}" "main.cpp")
 target_link_libraries("${target}" "${target}_base")
 
-if ("${BUILD_TESTS}")
+if (BUILD_TESTS)
     file(GLOB_RECURSE test_src "*.test.cpp")
     add_executable("${target}_test" "${test_src}")
     target_link_libraries("${target}_test" "${target}_base")

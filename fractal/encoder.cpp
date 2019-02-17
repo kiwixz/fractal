@@ -47,7 +47,7 @@ void Encoder::encode_rgb(uint32_t const* pixels)
 void Encoder::finish()
 {
     while (true)
-        if (forward_encoder_output(&x265_encoder_encode, &picture_, nullptr) == 0)
+        if (forward_encoder_output(&x265_encoder_encode, nullptr, nullptr) == 0)
             break;
 }
 
