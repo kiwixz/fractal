@@ -38,13 +38,32 @@ Encoder::Encoder(Settings const& settings, OutputCallback output_callback) :
 
 void Encoder::encode_rgb(uint32_t const* pixels)
 {
+    set_yuv_from_rgb(pixels);
+
+    x265_nal* nals;
+    uint32_t nr_nals;
+    x265_encoder_encode(encoder_.get(), &nals, &nr_nals, &picture_, nullptr);
+    for (unsigned i = 0; i < nr_nals; ++i) {
+        x265_nal const& nal = nals[i];
+        output_callback_(reinterpret_cast<std::byte const*>(nal.payload), nal.sizeBytes);
+    }
 }
 
 void Encoder::finish()
 {
+    bool finished = false;
+    while (!finished) {
+        x265_nal* nals;
+        uint32_t nr_nals;
+        finished = (x265_encoder_encode(encoder_.get(), &nals, &nr_nals, nullptr, nullptr) == 0);
+        for (unsigned i = 0; i < nr_nals; ++i) {
+            x265_nal const& nal = nals[i];
+            output_callback_(reinterpret_cast<std::byte const*>(nal.payload), nal.sizeBytes);
+        }
+    }
 }
 
-void Encoder::rgb_to_yuv444_bt709(uint32_t const* pixels)
+void Encoder::set_yuv_from_rgb(uint32_t const* pixels)
 {
     for (int i = 0; i < nr_pixels_; ++i) {
         int r = pixels[i] >> 16 & 0xff;

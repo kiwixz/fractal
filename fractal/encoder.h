@@ -24,7 +24,7 @@ private:
     x265_picture picture_;
     OutputCallback output_callback_;
 
-    void rgb_to_yuv444_bt709(uint32_t const* pixels);
+    void set_yuv_from_rgb(uint32_t const* pixels);  ///< Convert RBG pixels to YUV444 (BT.709)
 };
 
 }  // namespace fractal
