@@ -19,7 +19,7 @@ Settings::Settings(int argc, char** argv)
         ;
     options.add_options("file output")
         ("o,out", "File to output render instead of displaying it", cxxopts::value(output_file))
-        ("fps", "Frames per second", cxxopts::value(fps)->default_value("0"))
+        ("fps", "Frames per second", cxxopts::value(fps)->default_value("60"))
         ("d,duration", "Duration in seconds", cxxopts::value(duration)->default_value("10"))
         ;
     // clang-format on
