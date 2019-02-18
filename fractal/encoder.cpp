@@ -8,7 +8,7 @@ namespace fractal {
 Encoder::Encoder(Settings const& settings, OutputCallback output_callback) :
     encoder_{nullptr, &x265_encoder_close},
     nr_pixels_{settings.width * settings.height},
-    output_callback_{output_callback}
+    output_callback_{std::move(output_callback)}
 {
     static ScopeExit x265_handle{[&] {
         x265_cleanup();
@@ -62,9 +62,12 @@ void Encoder::set_yuv_from_rgb(uint32_t const* pixels)
         int r = pixels[i] >> 16 & 0xff;
         int g = pixels[i] >> 8 & 0xff;
         int b = pixels[i] & 0xff;
-        yuv_[i] = static_cast<uint8_t>(std::clamp(.2126 * r + .7152 * g + .0722 * b, 0., 255.));
-        yuv_[nr_pixels_ + i] = static_cast<uint8_t>(std::clamp(-.09991 * r + -.33609 * g + .436 * b, 0., 255.));
-        yuv_[nr_pixels_ * 2 + i] = static_cast<uint8_t>(std::clamp(.615 * r + -.55861 * g + -.05639 * b, 0., 255.));
+        yuv_[i] = static_cast<uint8_t>(std::clamp(.2126 * r + .7152 * g + .0722 * b,
+                                                  0., 255.));
+        yuv_[nr_pixels_ + i] = static_cast<uint8_t>(std::clamp(-.09991 * r + -.33609 * g + .436 * b,
+                                                               0., 255.));
+        yuv_[nr_pixels_ * 2 + i] = static_cast<uint8_t>(std::clamp(.615 * r + -.55861 * g + -.05639 * b,
+                                                                   0., 255.));
     }
 }
 
