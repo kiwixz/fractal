@@ -14,13 +14,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -Weverything  \
+        "${CMAKE_CXX_FLAGS} -march=native -Weverything  \
         -Wno-c++98-compat-pedantic -Wno-exit-time-destructors -Wno-float-equal -Wno-padded -Wno-sign-conversion"
     )
     set(CMAKE_CXX_FLAGS_DEBUG "-D DEBUG -O1 -g -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined")
     set(CMAKE_CXX_FLAGS_RELEASE "-D NDEBUG -O3 -flto -ffast-math")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /nologo /MP /diagnostics:caret /W4 /permissive- /EHsc")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /nologo /MP /diagnostics:caret /arch:AVX2 /W4 /permissive- /EHsc")
     set(CMAKE_CXX_FLAGS_DEBUG "/D DEBUG /MDd /JMC /RTC1 /ZI")
     set(CMAKE_CXX_FLAGS_RELEASE "/D NDEBUG /MD /O2 /GL /Gw /Zi /fp:fast")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NOLOGO")
