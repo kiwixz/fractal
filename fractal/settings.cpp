@@ -26,7 +26,7 @@ Settings::Settings(int argc, char** argv)
 
     cxxopts::ParseResult parse = options.parse(argc, argv);
     if (help)
-        fmt::print(options.help());
+        fmt::print(options.help({}));
     if (argc != 1)
         throw std::runtime_error{"too much arguments"};
 }
