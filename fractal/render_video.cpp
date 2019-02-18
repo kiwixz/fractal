@@ -17,8 +17,11 @@ void render_video(Settings const& settings)
 
     // tmp
     std::vector<uint32_t> pixels_v(settings.width * settings.height);
-    std::fill(pixels_v.begin(), pixels_v.end(), 0xff880000);
-    nr_frames = 60;
+    for (int y = 0; y < settings.height; ++y)
+        for (int x = 0; x < settings.width; ++x)
+            pixels_v[y * settings.width + x] = 0xffff0000
+                                               + ((255 * x / settings.width) << 8)
+                                               + (255 * y / settings.height);
 
     for (int frame = 0; frame < nr_frames; ++frame)
         encoder.encode_rgb(pixels_v.data());
