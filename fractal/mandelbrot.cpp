@@ -29,7 +29,7 @@ uint32_t const* Mandelbrot::generate(double x_center, double y_center, double zo
     double y_size = 1 / zoom;
     double x_size = y_size * width_ / height_;
     double x_min = x_center - x_size / 2;
-    double y_min = y_center - y_size / 2;
+    double y_max = y_center + y_size / 2;
     double dx = x_size / width_;
     double dy = y_size / height_;
 
@@ -39,7 +39,7 @@ uint32_t const* Mandelbrot::generate(double x_center, double y_center, double zo
             for (int pixel_y = from_y; pixel_y < to_y; ++pixel_y) {
                 for (int pixel_x = 0; pixel_x < width_; ++pixel_x) {
                     double real_x = x_min + dx * pixel_x;
-                    double real_y = y_min + dy * pixel_y;
+                    double real_y = y_max - dy * pixel_y;
                     double x = 0;
                     double y = 0;
 

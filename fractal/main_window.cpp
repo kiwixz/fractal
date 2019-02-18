@@ -43,7 +43,7 @@ MainWindow::MainWindow(Settings const& settings) :
             out vec2 tex_coords;
             void main() {
                 gl_Position = vec4(pos, 0.0f, 1.0f);
-                tex_coords = (pos + 1) / 2;
+                tex_coords = vec2((pos.x + 1) / 2, (3 - pos.y) / 2);
             }
         )";
     constexpr std::string_view fragment_source = R"(
