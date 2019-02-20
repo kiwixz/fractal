@@ -9,7 +9,7 @@ namespace fractal {
 struct Texture {
     Texture(int width, int height, GLenum format = GL_RGB8);
 
-    [[nodiscard]] ScopeExit bind();
+    [[nodiscard]] ScopeExit<> bind();
 
     template <typename T>
     void update(T const* pixels,
@@ -20,6 +20,8 @@ private:
     GlTextures<> texture_;
     int width_;
     int height_;
+
+    static void unbind();
 };
 
 

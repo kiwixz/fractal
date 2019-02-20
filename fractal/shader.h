@@ -20,15 +20,18 @@ private:
 
 
 struct ShaderProgram {
+public:
     ShaderProgram();
 
     void attach(Shader const& shader);
     void link();
 
-    [[nodiscard]] ScopeExit bind();
+    [[nodiscard]] ScopeExit<> bind();
 
 private:
     GlProgram program_;
+
+    static void unbind();
 };
 
 }  // namespace fractal

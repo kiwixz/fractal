@@ -21,17 +21,20 @@ FullQuad::FullQuad()
     glNamedBufferData(vertex_buffer_[0], sizeof(position), position.data(), GL_STATIC_DRAW);
 }
 
-ScopeExit FullQuad::bind()
+ScopeExit<> FullQuad::bind()
 {
     glBindVertexArray(vertex_array_[0]);
-    return ScopeExit{[] {
-        glBindVertexArray(0);
-    }};
+    return ScopeExit<>{&FullQuad::unbind};
 }
 
 void FullQuad::draw() const
 {
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+
+void FullQuad::unbind()
+{
+    glBindVertexArray(0);
 }
 
 }  // namespace fractal

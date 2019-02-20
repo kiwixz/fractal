@@ -9,12 +9,15 @@ Texture::Texture(int width, int height, GLenum format) :
     glTextureStorage2D(texture_[0], 1, format, width, height);
 }
 
-ScopeExit Texture::bind()
+ScopeExit<> Texture::bind()
 {
     glBindTexture(GL_TEXTURE_2D, texture_[0]);
-    return ScopeExit{[] {
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }};
+    return ScopeExit<>{&Texture::unbind};
+}
+
+void Texture::unbind()
+{
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 }  // namespace fractal

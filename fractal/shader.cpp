@@ -42,12 +42,15 @@ void ShaderProgram::link()
     spdlog::info("shader program linked");
 }
 
-ScopeExit ShaderProgram::bind()
+ScopeExit<> ShaderProgram::bind()
 {
     glUseProgram(program_.id());
-    return ScopeExit{[] {
-        glUseProgram(0);
-    }};
+    return ScopeExit<>{&ShaderProgram::unbind};
+}
+
+void ShaderProgram::unbind()
+{
+    glUseProgram(0);
 }
 
 }  // namespace fractal
