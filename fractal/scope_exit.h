@@ -35,8 +35,8 @@ ScopeExit<TFunction>::ScopeExit(Function function) :
 template <typename TFunction>
 ScopeExit<TFunction>::~ScopeExit()
 {
-    if constexpr (std::is_convertible_v<Function, bool>)
-        if (!function_)
+    if constexpr (std::is_constructible_v<bool, Function>)
+        if (!function_)  // NOLINT(bugprone-suspicious-semicolon)
             return;
     function_();
 }
