@@ -5,38 +5,41 @@
 
 namespace fractal::test {
 
-TEST_CASE("thread_pool_submit")
+TEST_SUITE("thread_pool")
 {
-    ThreadPool pool{std::thread::hardware_concurrency()};
-
+    TEST_CASE("submit")
     {
-        bool pass = false;
-        pool.submit([&] {
-                pass = true;
-            })
-                .get();
-        CHECK(pass);
+        ThreadPool pool{std::thread::hardware_concurrency()};
+
+        {
+            bool pass = false;
+            pool.submit([&] {
+                    pass = true;
+                })
+                    .get();
+            CHECK(pass);
+        }
+
+        {
+            bool pass = false;
+            pool.submit([](bool* b) {
+                    *b = true;
+                },
+                        &pass)
+                    .get();
+            CHECK(pass);
+        }
     }
 
+    TEST_CASE("special_submit")
     {
-        bool pass = false;
-        pool.submit([](bool* b) {
-                *b = true;
-            },
-                    &pass)
-                .get();
-        CHECK(pass);
+        ThreadPool pool{std::thread::hardware_concurrency()};
+
+        pool.submit([ptr = std::make_unique<int>()] {});
+        pool.submit([ptr = std::make_shared<int>()]() mutable {
+            ptr.reset();
+        });
     }
-}
-
-TEST_CASE("thread_pool_special_submit")
-{
-    ThreadPool pool{std::thread::hardware_concurrency()};
-
-    pool.submit([ptr = std::make_unique<int>()] {});
-    pool.submit([ptr = std::make_shared<int>()]() mutable {
-        ptr.reset();
-    });
 }
 
 }  // namespace fractal::test
