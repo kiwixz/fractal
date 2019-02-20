@@ -13,17 +13,17 @@ FullQuad::FullQuad()
     glCreateVertexArrays(1, vertex_array_.ptr());
     glCreateBuffers(1, vertex_buffer_.ptr());
 
-    glVertexArrayVertexBuffer(vertex_array_, 0, vertex_buffer_, 0, 2 * sizeof(GLfloat));
-    glEnableVertexArrayAttrib(vertex_array_, 0);
+    glVertexArrayVertexBuffer(vertex_array_[0], 0, vertex_buffer_[0], 0, 2 * sizeof(GLfloat));
+    glEnableVertexArrayAttrib(vertex_array_[0], 0);
 
-    glVertexArrayAttribFormat(vertex_array_, 0, 2, GL_FLOAT, GL_FALSE, 0);
-    glVertexArrayAttribBinding(vertex_array_, 0, 0);
-    glNamedBufferData(vertex_buffer_, sizeof(position), position.data(), GL_STATIC_DRAW);
+    glVertexArrayAttribFormat(vertex_array_[0], 0, 2, GL_FLOAT, GL_FALSE, 0);
+    glVertexArrayAttribBinding(vertex_array_[0], 0, 0);
+    glNamedBufferData(vertex_buffer_[0], sizeof(position), position.data(), GL_STATIC_DRAW);
 }
 
 ScopeExit FullQuad::bind()
 {
-    glBindVertexArray(vertex_array_);
+    glBindVertexArray(vertex_array_[0]);
     return {[] {
         glBindVertexArray(0);
     }};

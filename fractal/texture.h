@@ -26,7 +26,7 @@ private:
 template <typename T>
 void Texture::update(T const* pixels, GLenum format, GLenum type, int x_offset, int y_offset, int width, int height)
 {
-    glTextureSubImage2D(texture_, 0,
+    glTextureSubImage2D(texture_[0], 0,
                         x_offset, y_offset,
                         width != 0 ? width : width_,
                         height != 0 ? height : height_,

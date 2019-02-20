@@ -14,14 +14,13 @@ using GlArrayDeleter = void (*)(GLsizei size, GLuint const* ids);
 template <GlDeleter* Tdeleter>
 struct GlObject {
     GlObject() = default;
-    GlObject(GLuint id);
+    explicit GlObject(GLuint id);
     ~GlObject();
     GlObject(GlObject const&) = delete;
     GlObject& operator=(GlObject const&) = delete;
     GlObject(GlObject&& other) noexcept;
     GlObject& operator=(GlObject&& other) noexcept;
 
-    operator GLuint() const;
     GLuint id() const;
 
     GLuint* ptr();
@@ -40,7 +39,6 @@ struct GlArrayObject {
     GlArrayObject(GlArrayObject&& other) noexcept;
     GlArrayObject& operator=(GlArrayObject&& other) noexcept;
 
-    operator GLuint() const;
     GLuint operator[](size_t index) const;
     constexpr GLsizei size() const;
 
@@ -96,12 +94,6 @@ GlObject<Tdeleter>& GlObject<Tdeleter>::operator=(GlObject&& other) noexcept
 }
 
 template <GlDeleter* Tdeleter>
-GlObject<Tdeleter>::operator GLuint() const
-{
-    return id_;
-}
-
-template <GlDeleter* Tdeleter>
 GLuint GlObject<Tdeleter>::id() const
 {
     return id_;
@@ -132,12 +124,6 @@ GlArrayObject<Tdeleter, Tsize>& GlArrayObject<Tdeleter, Tsize>::operator=(GlArra
 {
     std::swap(ids_, other.ids_);
     return *this;
-}
-
-template <GlArrayDeleter* Tdeleter, size_t Tsize>
-GlArrayObject<Tdeleter, Tsize>::operator GLuint() const
-{
-    return ids_[0];
 }
 
 template <GlArrayDeleter* Tdeleter, size_t Tsize>
