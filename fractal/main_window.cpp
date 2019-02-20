@@ -28,12 +28,12 @@ MainWindow::MainWindow(Settings const& settings) :
     zoom_{settings.zoom},
     zoom_speed_{settings.zoom_speed}
 {
-    glfwSetWindowUserPointer(window_, this);
+    glfwSetWindowUserPointer(window_.ptr(), this);
     glfwSwapInterval(1);
-    glfwSetKeyCallback(window_, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+    glfwSetKeyCallback(window_.ptr(), [](GLFWwindow* window, int key, int scancode, int action, int mods) {
         return reinterpret_cast<MainWindow*>(glfwGetWindowUserPointer(window))->on_key(key, scancode, action, mods);
     });
-    glfwSetFramebufferSizeCallback(window_, [](GLFWwindow* window, int width, int height) {
+    glfwSetFramebufferSizeCallback(window_.ptr(), [](GLFWwindow* window, int width, int height) {
         return reinterpret_cast<MainWindow*>(glfwGetWindowUserPointer(window))->on_resize(width, height);
     });
 
@@ -69,14 +69,14 @@ void MainWindow::loop()
     using Clock = std::chrono::high_resolution_clock;
     Clock::time_point last_frame = Clock::now();
 
-    while (!glfwWindowShouldClose(window_)) {
+    while (!glfwWindowShouldClose(window_.ptr())) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         uint32_t const* pixels = mandelbrot_.generate(x_, y_, zoom_);
         texture_.update(pixels, GL_BGRA);
         quad_.draw();
 
-        glfwSwapBuffers(window_);
+        glfwSwapBuffers(window_.ptr());
         glfwPollEvents();
 
         Clock::time_point now = Clock::now();
@@ -96,7 +96,7 @@ void MainWindow::on_key(int key, int /*scancode*/, int action, int mods)
     if (action == GLFW_RELEASE) {
         if (mods == 0) {
             if (key == GLFW_KEY_ESCAPE)
-                glfwSetWindowShouldClose(window_, true);
+                glfwSetWindowShouldClose(window_.ptr(), true);
         }
     }
 }

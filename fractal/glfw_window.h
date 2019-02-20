@@ -11,8 +11,6 @@ struct GlfwWindow {
     GlfwWindow(int width, int height, std::string_view title,
                GLFWmonitor* monitor = nullptr, GLFWwindow* share = nullptr);
 
-    operator GLFWwindow*();
-    operator GLFWwindow const*() const;
     GLFWwindow* ptr();
     GLFWwindow const* ptr() const;
 

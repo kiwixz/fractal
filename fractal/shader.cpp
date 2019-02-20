@@ -45,7 +45,7 @@ void ShaderProgram::link()
 ScopeExit ShaderProgram::bind()
 {
     glUseProgram(program_.id());
-    return {[] {
+    return ScopeExit{[] {
         glUseProgram(0);
     }};
 }

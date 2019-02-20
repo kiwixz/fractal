@@ -24,7 +24,7 @@ FullQuad::FullQuad()
 ScopeExit FullQuad::bind()
 {
     glBindVertexArray(vertex_array_[0]);
-    return {[] {
+    return ScopeExit{[] {
         glBindVertexArray(0);
     }};
 }

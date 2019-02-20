@@ -34,16 +34,6 @@ GlfwWindow::GlfwWindow(int width, int height, std::string_view title,
                  glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
 
-GlfwWindow::operator GLFWwindow*()
-{
-    return window_.get();
-}
-
-GlfwWindow::operator GLFWwindow const*() const
-{
-    return window_.get();
-}
-
 GLFWwindow* GlfwWindow::ptr()
 {
     return window_.get();

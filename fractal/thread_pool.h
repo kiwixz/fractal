@@ -29,7 +29,7 @@ private:
     /// Wrapper to make tasks copyable in case they are not.
     template <typename T>
     struct SharedCallable {
-        SharedCallable(T&& callable);
+        explicit SharedCallable(T&& callable);
 
         template <typename... Args>
         auto operator()(Args&&... args);

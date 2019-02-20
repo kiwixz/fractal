@@ -12,7 +12,7 @@ Texture::Texture(int width, int height, GLenum format) :
 ScopeExit Texture::bind()
 {
     glBindTexture(GL_TEXTURE_2D, texture_[0]);
-    return {[] {
+    return ScopeExit{[] {
         glBindTexture(GL_TEXTURE_2D, 0);
     }};
 }

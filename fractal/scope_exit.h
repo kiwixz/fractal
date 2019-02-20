@@ -6,7 +6,7 @@ namespace fractal {
 
 struct ScopeExit {
     ScopeExit() = default;
-    ScopeExit(std::function<void()> function);
+    explicit ScopeExit(std::function<void()> function);
     ~ScopeExit();
     ScopeExit(ScopeExit const&) = delete;
     ScopeExit& operator=(ScopeExit const&) = delete;
