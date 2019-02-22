@@ -18,7 +18,7 @@ jobs:
                 sed  `# glad`  \
                 libxcursor libxinerama libxrandr  `# glfw`  \
                 nasm  `# x265`
-            ln -s "/opt/vcpkg" "/mnt/repo/vcpkg"
+            ln -s "/opt/vcpkg"
       - restore_cache:
           keys:
             - vcpkg-0-{{ .Branch }}-{{ .Revision }}
