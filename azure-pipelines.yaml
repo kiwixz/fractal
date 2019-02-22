@@ -1,4 +1,33 @@
 steps:
 - script: |
-    echo Hello World
-    echo Hello World2
+    docker build -t "image" --pull .
+    docker run --rm "image" /bin/bash -c '
+            set -e
+
+            echo -e "\n\e[97;44m > Dumping environment... \e[0m"
+            pacman --color=always -Q
+            vcpkg list
+
+            export CXXFLAGS="-fdiagnostics-color=always -Werror"
+            export LDFLAGS="-fdiagnostics-color=always -Werror -fuse-ld=lld"
+
+            echo -e "\n\e[97;44m > Testing debug... \e[0m"
+            mkdir -p "build/debug"
+            cd "build/debug"
+            cmake -G Ninja -D "CMAKE_BUILD_TYPE=Debug" "../.."
+            ninja
+            ctest --output-on-failure -E "check_.*"
+            echo
+
+            echo -e "\n\e[97;44m > Testing release... \e[0m"
+            mkdir "../release"
+            cd "../release"
+            cmake -G Ninja -D "CMAKE_BUILD_TYPE=Release" "../.."
+            ninja
+            ctest --output-on-failure -E "check_.*"
+            echo
+
+            echo -e "\n\e[97;44m > Analyze source code... \e[0m"
+            ctest --output-on-failure -R "check_.*"
+            echo
+        '
