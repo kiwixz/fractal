@@ -38,8 +38,10 @@ def install_vcpkg():
     else:
         subprocess.check_call(["git", "clone", "https://github.com/Microsoft/vcpkg.git"])
     subprocess.check_call(["git", "-C", "vcpkg", "checkout", VCPKG_COMMIT])
-    bootstrap_file = str(Path("vcpkg") / ("bootstrap-vcpkg.bat" if is_win() else "bootstrap-vcpkg.sh"))
-    subprocess.check_call([bootstrap_file, "-disableMetrics"])
+    if is_win():
+        subprocess.check_call([str(Path("vcpkg") / "bootstrap-vcpkg.bat"), "-disableMetrics"])
+    else:
+        subprocess.check_call([str(Path("vcpkg") / "bootstrap-vcpkg.sh"), "-disableMetrics", "-useSystemBinaries"])
 
 
 def install_vcpkg_packages():
