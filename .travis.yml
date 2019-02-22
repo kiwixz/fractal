@@ -35,6 +35,8 @@ script:
 
             export CXXFLAGS="-fdiagnostics-color=always -Werror"
             export LDFLAGS="-fdiagnostics-color=always -Werror -fuse-ld=lld"
+            export ASAN_OPTIONS="check_initialization_order=1"
+            export UBSAN_OPTIONS="print_stacktrace=1"
 
             echo -e "\n\e[97;44m > Testing debug... \e[0m"
             mkdir -p "build/debug"
