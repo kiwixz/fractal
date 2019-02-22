@@ -3,6 +3,8 @@ jobs:
   build:
     docker:
       - image: kiwixz/arch-vcpkg:2019-01-20
+    environment:
+      CMAKE_BUILD_PARALLEL_LEVEL: 4
     steps:
       - checkout
       - run:
@@ -14,7 +16,6 @@ jobs:
                 libxcursor libxinerama libxrandr  `# glfw`  \
                 nasm  `# x265`
             ln -s "/opt/vcpkg"
-            echo "exec $(which ninja) -j 4" '"$@"' > "/usr/local/bin/ninja"
       - restore_cache:
           keys:
             - vcpkg-0-{{ .Branch }}-{{ .Revision }}
