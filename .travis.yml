@@ -27,11 +27,13 @@ before_cache:
 script:
     - |
         docker run --rm "$DOCKER_IMAGE" /bin/bash -c '
-            set -e
-
             echo -e "\n\e[97;44m > Dumping environment... \e[0m"
             pacman --color=always -Q
             vcpkg list
+        '
+    - |
+        docker run --rm "$DOCKER_IMAGE" /bin/bash -c '
+            set -e
 
             export CXXFLAGS="-fdiagnostics-color=always -Werror"
             export LDFLAGS="-fdiagnostics-color=always -Werror -fuse-ld=lld"

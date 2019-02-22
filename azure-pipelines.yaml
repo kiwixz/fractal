@@ -2,11 +2,12 @@ steps:
 - script: |
     docker build -t "image" --pull .
     docker run --rm "image" /bin/bash -c '
-            set -e
-
             echo -e "\n\e[97;44m > Dumping environment... \e[0m"
             pacman --color=always -Q
             vcpkg list
+        '
+    docker run --rm "image" /bin/bash -c '
+            set -e
 
             export CXXFLAGS="-fdiagnostics-color=always -Werror"
             export LDFLAGS="-fdiagnostics-color=always -Werror -fuse-ld=lld"
