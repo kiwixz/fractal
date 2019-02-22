@@ -1,0 +1,12 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: kiwixz/arch-vcpkg:2019-01-20
+    steps:
+      - checkout
+      - run:
+          name: Test
+          command: |
+            echo Hello world !
+            echo Hello world 2 !
