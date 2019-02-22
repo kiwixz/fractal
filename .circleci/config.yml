@@ -3,10 +3,53 @@ jobs:
   build:
     docker:
       - image: kiwixz/arch-vcpkg:2019-01-20
+    environment:
+      CXXFLAGS: -fdiagnostics-color=always -Werror
+      LDFLAGS: -fdiagnostics-color=always -Werror -fuse-ld=lld
+      ASAN_OPTIONS: check_initialization_order=1
+      UBSAN_OPTIONS: print_stacktrace=1
     steps:
       - checkout
       - run:
-          name: Test
+          name: Install system dependencies
           command: |
-            echo Hello world !
-            echo Hello world 2 !
+            pacman --color=always --needed --noconfirm -Sy  \
+                clang cmake lld ninja python3  \
+                sed  `# glad`  \
+                libxcursor libxinerama libxrandr  `# glfw`  \
+                nasm  `# x265`
+            ln -s "/opt/vcpkg" "/mnt/repo/vcpkg"
+      - restore_cache:
+          keys:
+            - vcpkg-0-{{ .Branch }}-{{ .Revision }}
+            - vcpkg-0-{{ .Branch }}-
+            - vcpkg-0-
+      - run:
+          name: Install vcpkg dependencies
+          command: |
+            ./install_libs.py
+            kiwixz_cleanup_vcpkg
+      - save_cache:
+          key: vcpkg-0-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - vcpkg
+      - run:
+          name: Test debug
+          command: |
+            mkdir -p "build/debug"
+            cd "build/debug"
+            cmake -G Ninja -D "CMAKE_BUILD_TYPE=Debug" "../.."
+            ninja
+            ctest --output-on-failure -E "check_.*"
+      - run:
+          name: Test release
+          command: |
+            mkdir -p "build/release"
+            cd "build/release"
+            cmake -G Ninja -D "CMAKE_BUILD_TYPE=Release" "../.."
+            ninja
+            ctest --output-on-failure -E "check_.*"
+      - run:
+          name: Analyze source code
+          command: |
+            ctest --output-on-failure -R "check_.*"
