@@ -3,11 +3,6 @@ jobs:
   build:
     docker:
       - image: kiwixz/arch-vcpkg:2019-01-20
-    environment:
-      CXXFLAGS: -fdiagnostics-color=always -Werror
-      LDFLAGS: -fdiagnostics-color=always -Werror -fuse-ld=lld
-      ASAN_OPTIONS: check_initialization_order=1
-      UBSAN_OPTIONS: print_stacktrace=1
     steps:
       - checkout
       - run:
@@ -36,6 +31,10 @@ jobs:
       - run:
           name: Test debug
           command: |
+            export CXXFLAGS="-fdiagnostics-color=always -Werror"
+            export LDFLAGS="-fdiagnostics-color=always -Werror -fuse-ld=lld"
+            export ASAN_OPTIONS="check_initialization_order=1"
+            export UBSAN_OPTIONS="print_stacktrace=1"
             mkdir -p "build/debug"
             cd "build/debug"
             cmake -G Ninja -D "CMAKE_BUILD_TYPE=Debug" "../.."
@@ -44,12 +43,14 @@ jobs:
       - run:
           name: Test release
           command: |
+            export CXXFLAGS="-fdiagnostics-color=always -Werror"
+            export LDFLAGS="-fdiagnostics-color=always -Werror -fuse-ld=lld"
             mkdir -p "build/release"
             cd "build/release"
             cmake -G Ninja -D "CMAKE_BUILD_TYPE=Release" "../.."
             ninja
             ctest --output-on-failure -E "check_.*"
       - run:
-          name: Analyze source code
+          name: Additional checks
           command: |
             ctest --output-on-failure -R "check_.*"
