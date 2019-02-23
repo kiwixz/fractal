@@ -38,7 +38,7 @@ jobs:
       - save_cache:
           key: vcpkg-0-{{ .Branch }}-{{ .Revision }}
           paths:
-            - vcpkg
+            - /opt/vcpkg
       - run:
           name: Test debug
           command: |
