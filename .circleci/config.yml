@@ -7,6 +7,11 @@ jobs:
       CMAKE_BUILD_PARALLEL_LEVEL: 4
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - packages-0-{{ .Branch }}-{{ .Revision }}
+            - packages-0-{{ .Branch }}-
+            - packages-0-
       - run:
           name: Install system dependencies
           command: |
@@ -16,6 +21,10 @@ jobs:
                 libxcursor libxinerama libxrandr  `# glfw`  \
                 nasm  `# x265`
             ln -s "/opt/vcpkg"
+      - save_cache:
+          key: packages-0-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - /var/cache/pacman/pkg
       - restore_cache:
           keys:
             - vcpkg-0-{{ .Branch }}-{{ .Revision }}
