@@ -55,4 +55,5 @@ jobs:
       - run:
           name: Additional checks
           command: |
+            cd "build/debug"
             ctest --output-on-failure -R "check_.*"
