@@ -1,6 +1,8 @@
 # fractal
 
-[![](https://api.travis-ci.com/kiwixz/fractal.svg?branch=master)](https://travis-ci.com/kiwixz/fractal)
+[![](https://img.shields.io/circleci/project/github/kiwixz/fractal/master.svg)](https://circleci.com/gh/kiwixz/fractal/)
+[![](https://img.shields.io/github/commit-activity/m/kiwixz/fractal.svg)](https://github.com/kiwixz/fractal/commits/)
+[![](https://img.shields.io/github/repo-size/kiwixz/fractal.svg)](https://github.com/kiwixz/fractal/archive/master.zip)
 
 
 ## Overview
