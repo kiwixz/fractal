@@ -44,11 +44,12 @@ jobs:
             - /opt/vcpkg
       - run:
           name: Test debug
+          environment:
+            CXXFLAGS: "-fdiagnostics-color=always -Werror"
+            LDFLAGS: "-fdiagnostics-color=always -Werror -fuse-ld=lld"
+            ASAN_OPTIONS: "check_initialization_order=1"
+            UBSAN_OPTIONS: "print_stacktrace=1"
           command: |
-            export CXXFLAGS="-fdiagnostics-color=always -Werror"
-            export LDFLAGS="-fdiagnostics-color=always -Werror -fuse-ld=lld"
-            export ASAN_OPTIONS="check_initialization_order=1"
-            export UBSAN_OPTIONS="print_stacktrace=1"
             mkdir -p "build/debug"
             cd "build/debug"
             cmake -G Ninja -D "CMAKE_BUILD_TYPE=Debug" "../.."
@@ -56,9 +57,10 @@ jobs:
             ctest --output-on-failure -E "check_.*"
       - run:
           name: Test release
+          environment:
+            CXXFLAGS: "-fdiagnostics-color=always -Werror"
+            LDFLAGS: "-fdiagnostics-color=always -Werror -fuse-ld=lld"
           command: |
-            export CXXFLAGS="-fdiagnostics-color=always -Werror"
-            export LDFLAGS="-fdiagnostics-color=always -Werror -fuse-ld=lld"
             mkdir -p "build/release"
             cd "build/release"
             cmake -G Ninja -D "CMAKE_BUILD_TYPE=Release" "../.."
