@@ -8,13 +8,13 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          name: Restoring pacman cache
+          name: Restore pacman cache
           keys:
             - packages-0-{{ .Branch }}-{{ .Revision }}
             - packages-0-{{ .Branch }}-
             - packages-0-
       - run:
-          name: Installing system dependencies
+          name: Install system dependencies
           command: |
             pacman --color=always --needed --noconfirm -Sy  \
                 clang cmake lld ninja python3  \
@@ -22,28 +22,28 @@ jobs:
                 nasm  `# x265`
             ln -s "/opt/vcpkg"
       - save_cache:
-          name: Saving vcpkg cache
+          name: Save pacman cache
           key: packages-0-{{ .Branch }}-{{ .Revision }}
           paths:
             - /var/cache/pacman/pkg
       - restore_cache:
-          name: Restoring vcpkg cache
+          name: Restore vcpkg cache
           keys:
             - vcpkg-0-{{ .Branch }}-{{ .Revision }}
             - vcpkg-0-{{ .Branch }}-
             - vcpkg-0-
       - run:
-          name: Installing vcpkg dependencies
+          name: Install vcpkg dependencies
           command: |
             ./install_libs.py
             kiwixz_cleanup_vcpkg
       - save_cache:
-          name: Saving vcpkg cache
+          name: Save vcpkg cache
           key: vcpkg-0-{{ .Branch }}-{{ .Revision }}
           paths:
             - /opt/vcpkg
       - run:
-          name: Testing debug
+          name: Test debug
           command: |
             export CXXFLAGS="-fdiagnostics-color=always -Werror"
             export LDFLAGS="-fdiagnostics-color=always -Werror -fuse-ld=lld"
@@ -55,7 +55,7 @@ jobs:
             ninja
             ctest --output-on-failure -E "check_.*"
       - run:
-          name: Testing release
+          name: Test release
           command: |
             export CXXFLAGS="-fdiagnostics-color=always -Werror"
             export LDFLAGS="-fdiagnostics-color=always -Werror -fuse-ld=lld"
