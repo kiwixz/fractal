@@ -1,4 +1,5 @@
 version: 2
+
 jobs:
   build:
     docker:
@@ -71,3 +72,19 @@ jobs:
           command: |
             cd "build/debug"
             ctest --output-on-failure -R "check_.*"
+
+  doc:
+    docker:
+      - image: alpine:3.9
+    steps:
+      - checkout
+      - run:
+          name: Install system dependencies
+          command: |
+            apk --update add doxygen graphviz
+      - run:
+          name: Generate documentation
+          command: |
+            doxygen
+      - store_artifacts:
+          path: build/doc
