@@ -84,6 +84,7 @@ jobs:
       - run:
           name: Generate documentation
           command: |
+            mkdir build
             doxygen
       - store_artifacts:
           path: build/doc
