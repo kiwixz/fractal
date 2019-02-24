@@ -86,10 +86,11 @@ jobs:
       - run:
           name: Generate documentation
           command: |
-            mkdir build
+            mkdir "build"
             doxygen
+            mv "build/doc/html" "/doc"
       - store_artifacts:
-          path: build/doc
+          path: "/doc"
 
 workflows:
   version: 2
