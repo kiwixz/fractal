@@ -72,7 +72,6 @@ jobs:
           command: |
             cd "build/debug"
             ctest --output-on-failure -R "check_.*"
-
   doc:
     docker:
       - image: alpine:3.9
@@ -88,3 +87,10 @@ jobs:
             doxygen
       - store_artifacts:
           path: build/doc
+
+workflows:
+  version: 2
+  all:
+    jobs:
+      - "build"
+      - "doc"
