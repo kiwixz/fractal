@@ -32,6 +32,7 @@ def install_vcpkg():
     if (Path("vcpkg") / ".git").exists():
         logging.warning("vcpkg seems already installed, trying to update")
         subprocess.check_call(["git", "-C", "vcpkg", "reset", "--hard"])
+        subprocess.check_call(["git", "-C", "vcpkg", "clean", "-df"])
         if subprocess.check_output(["git", "-C", "vcpkg", "rev-parse", "HEAD"]).decode()[:-1] == VCPKG_COMMIT:
             logging.warning("vcpkg seems already up-to-date, skipping")
             return
