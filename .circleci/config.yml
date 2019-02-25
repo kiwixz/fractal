@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   "build":
     docker:
-      - image: kiwixz/arch-vcpkg:2019-02-17
+      - image: kiwixz/ci-cpp:2019-02-24
     environment:
       CMAKE_BUILD_PARALLEL_LEVEL: 4
     steps:
@@ -18,7 +18,6 @@ jobs:
           name: Install system dependencies
           command: |
             pacman --color=always --needed --noconfirm -Sy  \
-                clang cmake lld ninja python3  \
                 libxcursor libxinerama libxrandr  `# glfw`  \
                 nasm  `# x265`
             ln -s "/opt/vcpkg"
@@ -79,15 +78,14 @@ jobs:
             ctest --output-on-failure -R "check_.*"
   "doc":
     docker:
-      - image: alpine:3.9
+      - image: kiwixz/ci-alpine:2019-02-24
     steps:
       - checkout
       - run:
           name: Install system dependencies
           command: |
             apk --update add  \
-                doxygen graphviz  \
-                git openssh
+                doxygen graphviz
       - run:
           name: Generate documentation
           command: |
@@ -96,7 +94,6 @@ jobs:
       - deploy:
           name: Publish documentation
           command: |
-            ssh-keyscan "github.com" >> ~/.ssh/known_hosts
             git clone -b "gh-pages" --depth 1 "$CIRCLE_REPOSITORY_URL" "build/gh-pages"
             mv "build/doc/html" "build/gh-pages/doc/$CIRCLE_BRANCH"
             git -C "build/gh-pages" add -A
