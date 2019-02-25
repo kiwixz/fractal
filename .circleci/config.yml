@@ -44,6 +44,11 @@ jobs:
           paths:
             - /opt/vcpkg
       - run:
+          name: Dump versions
+          command: |
+            pacman --color=always -Q
+            vcpkg list
+      - run:
           name: Test debug
           environment:
             CXXFLAGS: "-fdiagnostics-color=always -Werror"
