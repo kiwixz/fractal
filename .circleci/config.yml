@@ -80,6 +80,7 @@ jobs:
     docker:
       - image: kiwixz/ci-alpine:2019-02-24
     steps:
+      - add_ssh_keys
       - checkout
       - run:
           name: Install system dependencies
@@ -95,6 +96,8 @@ jobs:
           name: Publish documentation
           command: |
             git clone -b "gh-pages" --depth 1 "$CIRCLE_REPOSITORY_URL" "build/gh-pages"
+            mkdir -p "build/gh-pages/doc"
+            rm -rf "build/gh-pages/doc/$CIRCLE_BRANCH"
             mv "build/doc/html" "build/gh-pages/doc/$CIRCLE_BRANCH"
             git -C "build/gh-pages" add -A
             git -C "build/gh-pages" commit -m "[ci] update doc/$CIRCLE_BRANCH commit $CIRCLE_SHA1"
