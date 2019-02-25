@@ -1,0 +1,4 @@
+<map id="fractal::test::TEST_SUITE" name="fractal::test::TEST_SUITE">
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,217,47"/>
+<area shape="rect" id="node2" href="$structfractal_1_1_thread_pool.html#ae4a2df7feb0a9f05f34cf4ca8fdd4396" title="Callable only needs to be moveable, but args must be copyable." alt="" coords="265,5,477,47"/>
+</map>

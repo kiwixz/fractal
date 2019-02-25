@@ -1,0 +1,4 @@
+<map id="fractal::Encoder::set_yuv_from_rgb" name="fractal::Encoder::set_yuv_from_rgb">
+<area shape="rect" id="node1" title="Convert RBG pixels to YUV444 (BT.709)" alt="" coords="356,5,588,47"/>
+<area shape="rect" id="node2" href="$structfractal_1_1_encoder.html#a774370c067b1c0d73add1374ea282e7e" title=" " alt="" coords="5,13,308,39"/>
+</map>

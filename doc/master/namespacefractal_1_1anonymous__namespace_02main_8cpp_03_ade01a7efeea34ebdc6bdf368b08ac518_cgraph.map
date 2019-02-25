@@ -1,0 +1,17 @@
+<map id="fractal::anonymous_namespace{main::cpp}::main" name="fractal::anonymous_namespace{main::cpp}::main">
+<area shape="rect" id="node1" title=" " alt="" coords="5,253,297,294"/>
+<area shape="rect" id="node2" href="$namespacefractal_1_1anonymous__namespace_02main_8cpp_03.html#ae8627868777810181cf8e38d084bee20" title=" " alt="" coords="345,245,577,301"/>
+<area shape="rect" id="node3" href="$structfractal_1_1_main_window.html#a96ec873be43b90688d41fff6ae3ec360" title=" " alt="" coords="635,223,847,265"/>
+<area shape="rect" id="node15" href="$namespacefractal.html#a8c2e0355fc7336950a444ca81a5ef949" title=" " alt="" coords="625,289,857,316"/>
+<area shape="rect" id="node4" href="$structfractal_1_1_shader_program.html#a65c0c65a3cac5af4a64e898ba200db0b" title=" " alt="" coords="915,57,1158,98"/>
+<area shape="rect" id="node7" href="$structfractal_1_1_full_quad.html#ab741333738e9ad68ed05cf9c7976d7d6" title=" " alt="" coords="911,129,1163,156"/>
+<area shape="rect" id="node9" href="$structfractal_1_1_texture.html#a88a52fe97f3eb1d7a86c8158b71f1f15" title=" " alt="" coords="915,180,1158,207"/>
+<area shape="rect" id="node11" href="$structfractal_1_1_glfw_window.html#a3777ec5f1b219cfb104c901f6121299b" title=" " alt="" coords="905,231,1168,257"/>
+<area shape="rect" id="node12" href="$structfractal_1_1_mandelbrot.html#afc6aa66d3967bb1d6828a4cf2efa61d6" title="pointer may be invalidated after any interaction with this object" alt="" coords="931,282,1143,323"/>
+<area shape="rect" id="node13" href="$structfractal_1_1_texture.html#a46e23d483c95de7b675e1c60b86d6d36" title=" " alt="" coords="905,348,1168,375"/>
+<area shape="rect" id="node14" href="$structfractal_1_1_full_quad.html#a8c3275ce999f6088f63f1eb1748d21c6" title="Needs to be bound first." alt="" coords="911,399,1163,425"/>
+<area shape="rect" id="node5" href="$structfractal_1_1_gl_object.html#af52b46835d8ac261160a1da910ca0294" title=" " alt="" coords="1231,5,1463,32"/>
+<area shape="rect" id="node6" href="$structfractal_1_1_shader_program.html#a7ab43c66ed517bc2060f596965a37940" title=" " alt="" coords="1226,57,1469,98"/>
+<area shape="rect" id="node8" href="$structfractal_1_1_full_quad.html#a9b052b47f4ad954fd2ff9c04a04932d7" title=" " alt="" coords="1241,122,1453,163"/>
+<area shape="rect" id="node10" href="$structfractal_1_1_texture.html#a697a1987a6b47324e89a8789bd69bb98" title=" " alt="" coords="1216,188,1479,215"/>
+</map>
