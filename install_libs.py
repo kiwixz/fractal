@@ -10,7 +10,7 @@ from distutils import dir_util
 from pathlib import Path
 
 
-VCPKG_COMMIT = "61d163a8fcdfec87ae90efbb9b107c3b0372492c"
+VCPKG_COMMIT = "4ad78224c989953cde21c77dd63345b9f722671b"
 VCPKG_LIBS = [
     "doctest",
     "cxxopts",
@@ -31,6 +31,7 @@ def install_vcpkg():
     logging.info("installing vcpkg")
     if (Path("vcpkg") / ".git").exists():
         logging.warning("vcpkg seems already installed, trying to update")
+        subprocess.check_call(["git", "-C", "vcpkg", "reset", "--hard"])
         if subprocess.check_output(["git", "-C", "vcpkg", "rev-parse", "HEAD"]).decode()[:-1] == VCPKG_COMMIT:
             logging.warning("vcpkg seems already up-to-date, skipping")
             return
