@@ -102,7 +102,7 @@ workflows:
   all:
     jobs:
       - "build"
-      - "doc"
+      - "doc":
           filters:
             branches:
               only: master
