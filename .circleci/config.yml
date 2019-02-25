@@ -86,8 +86,8 @@ jobs:
           name: Install system dependencies
           command: |
             apk --update add  \
-                ca-certificates  \
-                doxygen graphviz
+                doxygen graphviz  \
+                git openssh
       - run:
           name: Generate documentation
           command: |
@@ -96,6 +96,7 @@ jobs:
       - deploy:
           name: Publish documentation
           command: |
+            ssh-keyscan "github.com" >> ~/.ssh/known_hosts
             git clone -b "gh-pages" --depth 1 "$CIRCLE_REPOSITORY_URL" "build/gh-pages"
             mv "build/doc/html" "build/gh-pages/doc/$CIRCLE_BRANCH"
             git -C "build/gh-pages" add -A
