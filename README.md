@@ -2,6 +2,7 @@
 
 [![](https://img.shields.io/circleci/project/github/kiwixz/fractal/master.svg)](https://circleci.com/gh/kiwixz/fractal/)
 [![](https://img.shields.io/github/repo-size/kiwixz/fractal.svg)](https://github.com/kiwixz/fractal/archive/master.zip)
+[![](https://img.shields.io/badge/link-doxygen-blueviolet.svg)](https://kiwixz.github.io/fractal/doc/master/)
 
 
 ## Overview
