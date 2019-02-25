@@ -93,7 +93,14 @@ jobs:
           command: |
             mkdir "build"
             doxygen
-            mv "build/doc/html" "/doc"
+      - deploy:
+          name: Publish documentation
+          command: |
+            git clone -b "gh-pages" --depth 1 "$CIRCLE_REPOSITORY_URL" "build/gh-pages"
+            mv "build/doc/html" "build/gh-pages/doc/$CIRCLE_BRANCH"
+            git -C "build/gh-pages" add -A
+            git -C "build/gh-pages" commit -m "[ci] update doc/$CIRCLE_BRANCH commit $CIRCLE_SHA1"
+            git -C "build/gh-pages" push
       - store_artifacts:
           path: /doc
 
