@@ -51,10 +51,10 @@ jobs:
       - run:
           name: Test debug
           environment:
-            CXXFLAGS: "-fdiagnostics-color=always -Werror"
-            LDFLAGS: "-fdiagnostics-color=always -Werror -fuse-ld=lld"
-            ASAN_OPTIONS: "check_initialization_order=1"
-            UBSAN_OPTIONS: "print_stacktrace=1"
+            CXXFLAGS: -fdiagnostics-color=always -Werror
+            LDFLAGS: -fdiagnostics-color=always -Werror -fuse-ld=lld
+            ASAN_OPTIONS: check_initialization_order=1
+            UBSAN_OPTIONS: print_stacktrace=1
           command: |
             mkdir -p "build/debug"
             cd "build/debug"
@@ -64,8 +64,8 @@ jobs:
       - run:
           name: Test release
           environment:
-            CXXFLAGS: "-fdiagnostics-color=always -Werror"
-            LDFLAGS: "-fdiagnostics-color=always -Werror -fuse-ld=lld"
+            CXXFLAGS: -fdiagnostics-color=always -Werror
+            LDFLAGS: -fdiagnostics-color=always -Werror -fuse-ld=lld
           command: |
             mkdir -p "build/release"
             cd "build/release"
@@ -95,7 +95,7 @@ jobs:
             doxygen
             mv "build/doc/html" "/doc"
       - store_artifacts:
-          path: "/doc"
+          path: /doc
 
 workflows:
   version: 2
@@ -103,3 +103,6 @@ workflows:
     jobs:
       - "build"
       - "doc"
+          filters:
+            branches:
+              only: master
