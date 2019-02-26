@@ -78,15 +78,10 @@ jobs:
             ctest --output-on-failure -R "check_.*"
   "doc":
     docker:
-      - image: kiwixz/ci-alpine:2019-02-24
+      - image: kiwixz/ci-doc:2019-02-24
     steps:
       - add_ssh_keys
       - checkout
-      - run:
-          name: Install system dependencies
-          command: |
-            apk --update add  \
-                doxygen graphviz
       - run:
           name: Generate documentation
           command: |
