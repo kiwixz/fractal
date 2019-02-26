@@ -35,9 +35,9 @@ int main(int argc, char** argv)
         spdlog::set_level(spdlog::level::debug);
 #endif
         spdlog::set_pattern("%^[%H:%M:%S.%f][%t][%l]%$ %v");
-        spdlog::info("starting...");
+        spdlog::debug("starting...");
         main_impl(argc, argv);
-        spdlog::info("terminating...");
+        spdlog::debug("terminating...");
         spdlog::drop_all();
         return 0;
     }
