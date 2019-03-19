@@ -86,6 +86,7 @@ void MainWindow::loop()
 
         zoom_ += zoom_ * zoom_speed_ * delta;
 
+        texture_binding = {};
         texture_binding = texture_.bind();  // texture may have been resized
     }
 }
