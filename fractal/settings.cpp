@@ -14,7 +14,7 @@ Settings::Settings(int argc, char** argv)
         ("H,height", "Render's height", cxxopts::value(height)->default_value("888"))
         ("x", "Horizontal center of render", cxxopts::value(x)->default_value("-0.75"))
         ("y", "Vertical center of render", cxxopts::value(y)->default_value("0"))
-        ("z,zoom", "Initial zoom (unit based on render's height)", cxxopts::value(zoom)->default_value("0.42"))
+        ("z,zoom", "Initial zoom (unit based on render's height)", cxxopts::value(zoom)->default_value("-1.23"))
         ("s,speed", "Zoom per second", cxxopts::value(zoom_speed))
         ;
     options.add_options("file output")

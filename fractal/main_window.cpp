@@ -25,7 +25,7 @@ MainWindow::MainWindow(Settings const& settings) :
     mandelbrot_{settings.width, settings.height},
     x_{settings.x},
     y_{settings.y},
-    zoom_{settings.zoom},
+    zoom_{std::pow(2., settings.zoom)},
     zoom_speed_{settings.zoom_speed}
 {
     glfwSetWindowUserPointer(window_.ptr(), this);
@@ -84,7 +84,7 @@ void MainWindow::loop()
         last_frame = now;
         spdlog::info("[main_window] frame time: {}ms", delta * std::milli::den);
 
-        zoom_ += zoom_ * zoom_speed_ * delta;
+        zoom_ *= std::pow(2., zoom_speed_ * delta);
 
         texture_binding = {};
         texture_binding = texture_.bind();  // texture may have been resized

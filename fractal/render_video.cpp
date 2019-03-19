@@ -14,13 +14,12 @@ void render_video(Settings const& settings)
                     }};
 
     Mandelbrot mandelbrot{settings.width, settings.height};
-    double zoom = settings.zoom;
 
     int nr_frames = settings.duration * settings.fps;
     for (int frame = 0; frame < nr_frames; ++frame) {
-        encoder.encode_rgb(mandelbrot.generate(settings.x, settings.y, zoom));
         spdlog::info("[render_video] frame {}/{}", frame, nr_frames);
-        zoom += zoom * settings.zoom_speed / settings.fps;
+        encoder.encode_rgb(mandelbrot.generate(settings.x, settings.y,
+                                               std::pow(2., settings.zoom + settings.zoom_speed / settings.fps * frame)));
     }
     encoder.finish();
 }
