@@ -16,7 +16,7 @@ It's able to zoom progressively at the coordinates of your choice.  You can eith
 
 [Watch on Youtube!](https://www.youtube.com/watch?v=Uj1qerIS_fc)
 
-Inspired by [a GIF from Wikipedia](https://commons.wikimedia.org/wiki/File:Mandelbrot_sequence_new.gif).
+Inspired by [a GIF from Wikipedia](https://commons.wikimedia.org/wiki/File:Mandelbrot_sequence_new.gif).  After 2h10 of computation, the output was 22 GiB.  The music is the famous Lacrimosa of Mozart's Requiem, from [here](https://www.youtube.com/watch?v=k1-TrAvp_xs).
 
 Generated with (audio is from [here](https://www.youtube.com/watch?v=k1-TrAvp_xs)):
 ```sh
