@@ -18,7 +18,7 @@ It's able to zoom progressively at the coordinates of your choice.  You can eith
 
 Inspired by [a GIF from Wikipedia](https://commons.wikimedia.org/wiki/File:Mandelbrot_sequence_new.gif).  After 2h10 of computation, the output was 22 GiB.  The music is the famous Lacrimosa of Mozart's Requiem, from [here](https://www.youtube.com/watch?v=k1-TrAvp_xs).
 
-Generated with (audio is from [here](https://www.youtube.com/watch?v=k1-TrAvp_xs)):
+Generated with:
 ```sh
 fractal -x -0.743643887037158704752191506114774 -y 0.131825904205311970493132056385139 -z -10 -s 0.8 -d 67 -W 3840 -H 2160 --fps 60 -o "out.hevc"
 ffmpeg -i "out.hevc" -c copy "out.mp4"
