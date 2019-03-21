@@ -72,16 +72,18 @@ $(function() {
 </a> <a href="https://kiwixz.github.io/fractal/doc/master/"><object type="image/svg+xml" data="https://img.shields.io/badge/link-doxygen-blueviolet.svg"></object>
 />
 </a></p>
-<h2>Overview</h2>
 <p>Tool to visualize <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">Mandelbrot set</a>.</p>
 <p>It's able to zoom progressively at the coordinates of your choice. You can either display it in a window, or export a video.</p>
 <p><code>fractal -h</code> for more information.</p>
-<h2>License</h2>
+<h2>Demo</h2>
+<p><a href="https://www.youtube.com/watch?v=Uj1qerIS_fc">Watch on Youtube!</a></p>
+<p>Inspired by <a href="https://commons.wikimedia.org/wiki/File:Mandelbrot_sequence_new.gif">a GIF from Wikipedia</a>.</p>
+<p>Generated with (audio is from <a href="https://www.youtube.com/watch?v=k1-TrAvp_xs">here</a>): </p><div class="fragment"><div class="line">fractal -x -0.743643887037158704752191506114774 -y 0.131825904205311970493132056385139 -z -10 -s 0.8 -d 67 -W 3840 -H 2160 --fps 60 -o &quot;out.hevc&quot;</div><div class="line">ffmpeg -i &quot;out.hevc&quot; -c copy &quot;out.mp4&quot;</div><div class="line">ffmpeg -i &quot;out.mp4&quot; -c copy &quot;out.mkv&quot;</div><div class="line">ffmpeg -ss 121 -t 67 -i &quot;lacrimosa.webm&quot; -i &quot;out.mkv&quot; -c copy -c:a libopus -b:a 128k -af &quot;afade=t=in:d=2&quot; -y &quot;out_audio.mkv&quot;</div></div><!-- fragment --><h2>License</h2>
 <div class="fragment"><div class="line">MIT License</div><div class="line"></div><div class="line">Copyright (c) 2019 kiwixz</div><div class="line"></div><div class="line">Permission is hereby granted, free of charge, to any person obtaining a copy</div><div class="line">of this software and associated documentation files (the &quot;Software&quot;), to deal</div><div class="line">in the Software without restriction, including without limitation the rights</div><div class="line">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</div><div class="line">copies of the Software, and to permit persons to whom the Software is</div><div class="line">furnished to do so, subject to the following conditions:</div><div class="line"></div><div class="line">The above copyright notice and this permission notice shall be included in all</div><div class="line">copies or substantial portions of the Software.</div><div class="line"></div><div class="line">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</div><div class="line">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</div><div class="line">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</div><div class="line">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</div><div class="line">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</div><div class="line">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</div><div class="line">SOFTWARE.</div></div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 19 2019 02:08:40 for Fractal by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 21 2019 03:39:22 for Fractal by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.15
 </small></address>
