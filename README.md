@@ -5,7 +5,7 @@
 [![](https://img.shields.io/badge/link-doxygen-blueviolet.svg)](https://kiwixz.github.io/fractal/doc/master/)
 
 
-Tool to visualize [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set).
+Tool to visualize [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set).  Zoom is limited by doubles' precision.
 
 It's able to zoom progressively at the coordinates of your choice.  You can either display it in a window, or export a video.
 
@@ -23,7 +23,7 @@ Generated with:
 fractal -x -0.743643887037158704752191506114774 -y 0.131825904205311970493132056385139 -z -10 -s 0.8 -d 67 -W 3840 -H 2160 --fps 60 -o "out.hevc"
 ffmpeg -i "out.hevc" -c copy "out.mp4"
 ffmpeg -i "out.mp4" -c copy "out.mkv"
-ffmpeg -ss 121 -t 67 -i "lacrimosa.webm" -i "out.mkv" -c copy -c:a libopus -b:a 128k -af "afade=t=in:d=2" -y "out_audio.mkv"
+ffmpeg -ss 121 -t 67 -i "lacrimosa.webm" -i "out.mkv" -c copy -c:a libopus -b:a 128k -af "afade=t=in:d=2" "out_audio.mkv"
 ```
 
 
